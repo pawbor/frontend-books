@@ -6,7 +6,7 @@
     },
     "title": "JavaScript: The Good Parts",
     "author": "Douglas Crockford",
-    "releaseDate": "12-2008",
+    "releaseDate": "12/2008",
     "pages": 172,
     "link": "http://shop.oreilly.com/product/9780596517748.do"
   },
@@ -17,7 +17,7 @@
     },
     "title": "JavaScript: The Definitive Guide",
     "author": "David Flanagan",
-    "releaseDate": "11-2001",
+    "releaseDate": "11/2001",
     "pages": 936,
     "link": "http://shop.oreilly.com/product/9780596000486.do"
   },
@@ -28,7 +28,7 @@
     },
     "title": "Learning JavaScript Design Patterns",
     "author": "Addy Osmani",
-    "releaseDate": "08-2012",
+    "releaseDate": "08/2012",
     "pages": 254,
     "link": "http://shop.oreilly.com/product/0636920025832.do"
   },
@@ -39,7 +39,7 @@
     },
     "title": "JavaScript Enlightenment",
     "author": "Cody Lindley",
-    "releaseDate": "12-2012",
+    "releaseDate": "12/2012",
     "pages": 166,
     "link": "http://shop.oreilly.com/product/0636920027713.do"
   },
@@ -50,7 +50,7 @@
     },
     "title": "Programming JavaScript Applications",
     "author": "Eric Elliott",
-    "releaseDate": "07-2014",
+    "releaseDate": "07/2014",
     "pages": 254,
     "link": "http://shop.oreilly.com/product/0636920033141.do"
   },
@@ -61,7 +61,7 @@
     },
     "title": "Practical Modern JavaScript",
     "author": "Nicolas Bevacqua",
-    "releaseDate": "07-2017",
+    "releaseDate": "07/2017",
     "pages": 334,
     "link": "http://shop.oreilly.com/product/0636920047124.do"
   }

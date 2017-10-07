@@ -1,20 +1,22 @@
 # Front-endowe zadanie rekrutacyjne: "książki o javascript"
 
 
-
 ## Treść zadania
 
-1.  Zmień strukturę HTML pliku `index.html` oraz napisz odpowiednie reguły CSS, tak 
-    aby jak najdokładniej odwzorować wygląd przedstawiony na makietach.
+1.  Zmień strukturę HTML pliku `static/index.html` oraz napisz odpowiednie reguły CSS, tak 
+    aby jak najdokładniej odwzorować wygląd przedstawiony na makietach (patrz katalog
+    `screenshots/`).
     
 2.  Dodaj do strony zachowania:
     
     1.  Kliknięcie na obraz okładki, powinno powodować pokazanie większego obrazka
         okładki. Obraz ten powinien być na pierwszym planie, to co jest pod spodem
-        powinno zostać przyciemnione (patrz przykład: []).
+        powinno zostać przesłonięte półprzezroczystym wypełnieniem (patrz przykład: 
+        `screenshots/popup.png`).
     
     2.  Zaznaczenie opcji sortowania, powinno zmienić kolejność elementów zgodnie z 
-        opisem danej opcji.
+        opisem danej opcji. Nie ma znaczenia czy sortowanie będzie w porządku rosnącym
+        czy malejącym.
         
     3.  Wpisanie wartości do filtra, powinno pozostawić widoczne jedynie książki
         spełniające warunek.
@@ -23,8 +25,15 @@
         `wyczyść`. Takie samo zachowanie jest spodziewane po naciśnięciu skrótu
         klawiszowego `[alt] + [r]`
         
-    4.  Zaznaczone opjec (sortowanie / filtrowanie) powinny być zachowywane pomiędzy
-        odświeżeniami strony.
+    4.  Zaznaczone opcje (sortowanie / filtrowanie) powinny być zachowywane pomiędzy
+        odświeżeniami strony. Tj. wybranie sortowania, a potem przeładowanie strony
+        powinno skutkować pokazaniem elementów z uwzględnieniem wybranego wcześniej 
+        sortowania.
+
+3.  Ewentualnie uzupełnij plik `notes.md`, wpisując tam swoje uwagi/komentarze, tak 
+    do zadania, jak i do swojego rozwiązania (np. w jakich przeglądarkach na 100%
+    działa, jakie założenia / uproszczenia zostały przyjęte itp.)
+
 
 ## Uwagi
 
@@ -34,11 +43,15 @@
 *   W repozytorium znajduje się plik `/books.json` zawierający te same dane, które
     zostały wpisane w HTML. Możesz go wykorzystać.
     
-*   Odradzamy korzystanie z frameworków CSS, bo zależy nam tym, żeby zobaczyć Twój
-    kod.
+*   Odradzamy korzystanie z frameworków CSS. Zależy nam tym, żeby zobaczyć Twój kod.
+
+*   Odwzorowanie layoutów nie musi być "pixel-perfect".
 
 *   Głównie zależy nam na dwóch rzeczach: jakości kodu (html/css/js) i końcowym 
-    efekcie wizualnym.
+    _look-and-feel_.
+
+*   Użyty font to `Lato`.
+
 
 ## Uruchamianie
 
@@ -50,3 +63,4 @@ $ npm install
 $ npm start
 ```
 
+W konsoli pojawi się komunikat wskazujący pod jakim adresem nasłuchuje serwer.
