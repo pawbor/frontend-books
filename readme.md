@@ -1,4 +1,4 @@
-# Front-endowe zadanie rekrutacyjne: "książki o javascript"
+# Front-endowe zadanie: "książki o javascript"
 
 
 ## Treść zadania
@@ -64,3 +64,17 @@ $ npm start
 ```
 
 W konsoli pojawi się komunikat wskazujący pod jakim adresem nasłuchuje serwer.
+
+
+## Wysłanie rozwiązania
+
+*   Stwórz prywatne repozytorium na [bitbucket.org](https://bitbucket.org)
+    
+*   W branchu _master_ umieść niezmienioną zawartość tego zadania, a swoją pracę
+    w dowolnym innym branchu.
+    
+*   Otwórz pull-request z brancha z rozwiązaniem do brancha master. Będziemy go 
+    oglądać i komentować.
+
+*   Dodaj prawo odczytu do swojego repozytorium użytkownikowi `allegrotech` i dodaj
+    go jako review'era pull-request'a.
