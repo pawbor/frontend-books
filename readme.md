@@ -43,7 +43,12 @@
 *   W repozytorium znajduje się plik `/books.json` zawierający te same dane, które
     zostały wpisane w HTML. Możesz go wykorzystać.
     
-*   Odradzamy korzystanie z frameworków CSS. Zależy nam tym, żeby zobaczyć Twój kod.
+*   Nie korzystaj z frameworków (Angular/React/Redux/Vue itp.). Chcemy zobaczyć jak
+    radzisz sobie z czystym Javascript'em i czy sam potrafisz zaprojektować strukturę
+    aplikacji.
+    
+*   Odradzamy korzystanie z frameworków CSS. Także tu zależy nam tym, żeby zobaczyć 
+    Twój kod.
 
 *   Odwzorowanie layoutów nie musi być "pixel-perfect".
 
