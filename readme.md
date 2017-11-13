@@ -30,9 +30,11 @@
         powinno skutkować pokazaniem elementów z uwzględnieniem wybranego wcześniej 
         sortowania.
 
-3.  Ewentualnie uzupełnij plik `notes.md`, wpisując tam swoje uwagi/komentarze, tak 
+3.  Uzupełnij plik `notes.md`, wpisując tam swoje uwagi/komentarze, tak 
     do zadania, jak i do swojego rozwiązania (np. w jakich przeglądarkach na 100%
     działa, jakie założenia / uproszczenia zostały przyjęte itp.)
+    
+4.  Przetestuj jednostkowo funkcje związane z sortowaniem/filtrowaniem książek. Inne testy są mile widziane.
 
 
 ## Uwagi
@@ -83,3 +85,6 @@ W konsoli pojawi się komunikat wskazujący pod jakim adresem nasłuchuje serwer
 
 *   Dodaj prawo odczytu do swojego repozytorium użytkownikowi `allegrotech` i dodaj
     go jako review'era pull-request'a.
+    
+
+Wykonaj zadanie najlepiej jak potrafisz. Ważniejsza jest dla nas jakość kodu niż szybkie odesłanie rozwiązania.
