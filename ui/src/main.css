@@ -1,29 +1,7 @@
-body {
-  margin: 0;
-  padding-bottom: 378.4%;
-  background-image: url("./screenshots/550px.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-color: #eeeeee;
-}
+@import './reset.css';
+@import './wireframes.css';
 
-@media (min-width: 760px) {
-  body {
-    padding-bottom: 261.3%;
-    background-image: url("./screenshots/760px.png");
-  }
-}
-
-@media (min-width: 1024px) {
-  body {
-    padding-bottom: 155.8%;
-    background-image: url("./screenshots/1024px.png");
-  }
-}
-
-@media (min-width: 1680px) {
-  body {
-    padding-bottom: 66.4%;
-    background-image: url("./screenshots/1680px.png");
-  }
+html {
+  font-family: Lato;
+  font-size: 10px
 }

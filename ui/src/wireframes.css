@@ -1,0 +1,34 @@
+body::before {
+  top: 0;
+  content: '';
+  display: block;
+  position: absolute;
+  width: 100%;
+  z-index: -1;
+  padding-bottom: calc(4162 / 1100 * 100%);
+  background-image: url("./screenshots/550px.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: #eeeeee;
+}
+
+@media (min-width: 760px) {
+  body::before {
+    padding-bottom: calc(3972 / 1520 * 100%);
+    background-image: url("./screenshots/760px.png");
+  }
+}
+
+@media (min-width: 1024px) {
+  body::before {
+    padding-bottom: calc(3190 / 2048 * 100%);
+    background-image: url("./screenshots/1024px.png");
+  }
+}
+
+@media (min-width: 1680px) {
+  body::before {
+    padding-bottom: calc(2232 / 3360 * 100%);
+    background-image: url("./screenshots/1680px.png");
+  }
+}
