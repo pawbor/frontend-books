@@ -1,0 +1,30 @@
+.FilteringOptions__header {
+  font-size: 1.32rem;
+  font-weight: bold;
+  margin-top: 1.5rem;
+}
+
+.FilteringOptions__list {
+  margin-top: 1.3rem;
+  padding-right: 1rem;
+}
+
+.PagesFilter {
+  font-size: 0.9em;
+}
+
+.PagesFilter__input {
+  display: inline-block;
+  font-size: inherit;
+  width: 2.7rem;
+  height: 1.5rem;
+  padding: 0 0.2rem;
+  margin: 0 0.5rem;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  outline: none;
+}
+
+.PagesFilter__input:focus {
+  border-bottom-color: black;
+}

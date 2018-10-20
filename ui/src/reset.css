@@ -4,6 +4,7 @@ html {
 
 *, *:before, *:after {
   box-sizing: inherit;
+  font: inherit;
 }
 
 html, body, div, span, object, iframe,

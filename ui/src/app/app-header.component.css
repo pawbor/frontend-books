@@ -1,17 +1,9 @@
 .AppHeader {
-  --lower-width: 320;
-  --upper-width: 760;
-  --lower-fs: 17.5;
-  --upper-fs: 43;
-  --slope: calc(
-    (var(--upper-fs) - var(--lower-fs)) /
-      (var(--upper-width) - var(--lower-width))
-  );
-
   width: 100%;
   height: 3.2em;
   padding-top: 0.5em;
-  font-size: calc(var(--lower-fs) * 1px);
+  font-size: 1.75em;
+  font-weight: bold;
   border-bottom: 1px dashed rgba(0, 0, 0, 0.2);
 }
 
@@ -27,37 +19,8 @@
   z-index: -1;
 }
 
-@media (min-width: 320px) {
-  .AppHeader {
-    font-size: calc(
-      var(--slope) * (100vw - calc(var(--upper-width) * 1px)) +
-        calc(var(--upper-fs) * 1px)
-    );
-  }
-}
-
 @media (min-width: 760px) {
   .AppHeader {
-    --lower-width: 760;
-    --upper-width: 1024;
-    --lower-fs: 31;
-    --upper-fs: 42;
-
     height: 3.3em;
-  }
-}
-
-@media (min-width: 1024px) {
-  .AppHeader {
-    --lower-width: 1024;
-    --upper-width: 1680;
-    --lower-fs: 31;
-    --upper-fs: 52;
-  }
-}
-
-@media (min-width: 1680px) {
-  .AppHeader {
-    font-size: 32px;
   }
 }

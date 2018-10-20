@@ -1,0 +1,70 @@
+.AppAside {
+  padding: 2.4rem 1.8rem;
+}
+
+.AppAside__clear,
+.AppAside__clear::before,
+.AppAside__clear::after {
+  border-radius: 0.2rem;
+}
+
+.AppAside__clear {
+  font-size: 0.7rem;
+  position: relative;
+  display: block;
+  margin: auto;
+  margin-top: 1rem;
+  padding: 0.8rem 1.5rem;
+  background-color: #aaaaaa;
+  cursor: pointer;
+  font-weight: 900;
+  color: #fff;
+  box-shadow: none;
+  outline: none;
+  border: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.AppAside__clear::before,
+.AppAside__clear::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.AppAside__clear::before {
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.AppAside__clear::after {
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.AppAside__clear:hover,
+.AppAside__clear:focus {
+  transform: scale(1.01);
+}
+
+.AppAside__clear:hover::before,
+.AppAside__clear:focus::before {
+  opacity: 1;
+}
+
+.AppAside__clear:active {
+  transform: scale(0.96);
+}
+
+.AppAside__clear:active::after {
+  opacity: 1;
+}
+
+.AppAside__clear:active::before {
+  opacity: 0;
+}
+

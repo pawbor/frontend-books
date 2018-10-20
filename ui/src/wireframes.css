@@ -9,7 +9,6 @@ body::before {
   background-image: url("./screenshots/550px.png");
   background-repeat: no-repeat;
   background-size: cover;
-  background-color: #eeeeee;
 }
 
 @media (min-width: 760px) {

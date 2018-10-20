@@ -5,4 +5,3 @@ import bootstrapApp from './bootstrap-app';
 
 registerSW();
 bootstrapApp();
-

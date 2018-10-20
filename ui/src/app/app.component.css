@@ -1,6 +1,50 @@
 html {
+  --lower-width: 320;
+  --upper-width: 760;
+  --lower-fs: 10;
+  --upper-fs: 24.6;
+  --slope: calc(
+    (var(--upper-fs) - var(--lower-fs)) /
+      (var(--upper-width) - var(--lower-width))
+  );
+
   font-family: Lato;
-  font-size: 10px;
+  font-size: calc(var(--lower-fs) * 1px);
+  background-color: #eeeeee;
+  height: 100%
+}
+
+@media (min-width: 320px) {
+  html {
+    font-size: calc(
+      var(--slope) * (100vw - calc(var(--upper-width) * 1px)) +
+        calc(var(--upper-fs) * 1px)
+    );
+  }
+}
+
+@media (min-width: 760px) {
+  html {
+    --lower-width: 760;
+    --upper-width: 1024;
+    --lower-fs: 17.7;
+    --upper-fs: 24;
+  }
+}
+
+@media (min-width: 1024px) {
+  html {
+    --lower-width: 1024;
+    --upper-width: 1680;
+    --lower-fs: 17.7;
+    --upper-fs: 29.7;
+  }
+}
+
+@media (min-width: 1680px) {
+  html {
+    font-size: 18.3px;
+  }
 }
 
 body {
@@ -8,14 +52,14 @@ body {
   flex-flow: column nowrap;
 }
 
-.AppMain {
-  flex: 1 1 auto;
+.AppAside {
   order: 2;
+  flex: 1 1 auto;
 }
 
-.AppAside {
-  order: 3;
+.AppMain {
   flex: 1 1 auto;
+  order: 3;
 }
 
 @media (min-width: 1024px) {
@@ -24,11 +68,6 @@ body {
   }
 
   .AppAside {
-    order: 2;
     flex: 0 0 auto;
-  }
-
-  .AppMain {
-    order: 3;
   }
 }
