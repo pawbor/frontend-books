@@ -1,0 +1,12 @@
+{
+  "presets": ["@babel/preset-env"],
+  "plugins": [
+    [
+      "@babel/plugin-transform-react-jsx",
+      {
+        "pragma": "jsx.pragma",
+        "pragmaFrag": "jsx.fragment"
+      }
+    ]
+  ]
+}

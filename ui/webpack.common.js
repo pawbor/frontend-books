@@ -7,10 +7,15 @@ const { GenerateSW } = require('workbox-webpack-plugin');
 module.exports = {
   entry: './src/index.js',
   resolve: {
-    modules: [path.resolve(__dirname, 'src'), 'node_modules']
+    modules: [path.resolve(__dirname, 'src'), 'node_modules'],
   },
   module: {
     rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: 'babel-loader',
+      },
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader'],
@@ -27,6 +32,9 @@ module.exports = {
       title: 'Frontend Books',
     }),
     new webpack.HashedModuleIdsPlugin(),
+    new webpack.DefinePlugin({
+      isDevelopment: process.env.NODE_ENV === 'development'
+    }),
     new GenerateSW({
       clientsClaim: true,
       skipWaiting: true,
