@@ -13,7 +13,7 @@ export default function pragma(type, props, ...children) {
   }
 
   if (isCustomElement(type)) {
-    return type(props, children);
+    return type({ props, children });
   }
 
   throw new Error(`Unsupported element type: ${typeof type}`);

@@ -94,7 +94,10 @@ describe('custom element', () => {
     const customElement = jest.fn().mockReturnValue(expectedElement);
     const result = pragma(customElement, expectedProps);
     expect(result).toStrictEqual(expectedElement);
-    expect(customElement).toHaveBeenCalledWith(expectedProps, []);
+    expect(customElement).toHaveBeenCalledWith({
+      props: expectedProps,
+      children: [],
+    });
   });
 
   test('with children', () => {
@@ -112,7 +115,10 @@ describe('custom element', () => {
       expectedChildren.slice(1)
     );
     expect(result).toStrictEqual(expectedElement);
-    expect(customElement).toHaveBeenCalledWith(null, expectedChildren);
+    expect(customElement).toHaveBeenCalledWith({
+      props: null,
+      children: expectedChildren,
+    });
   });
 });
 

@@ -1,60 +1,38 @@
 import './sorting-options.component.css';
 
+import jsx from 'utils/jsx';
 import Invisible from 'common/invisible/invisible.component';
 import ElementWithDivider from './element-with-divider.component';
 
 const options = ['ilości stron', 'dacie wydania', 'nazwisku autora'];
 
 export default function SortingOptions() {
-  const fragment = document.createDocumentFragment();
-
-  const header = document.createElement('h2');
-  header.className = 'SortingOptions__header';
-  header.innerHTML = 'Sortuj po';
-  fragment.appendChild(header);
-
-  const list = ElementWithDivider(List);
-  
-  fragment.appendChild(list);
-  return fragment;
+  return (
+    <>
+      <h2 className="SortingOptions__header">Sortuj po</h2>
+      <ElementWithDivider render={List} />
+    </>
+  );
 }
 
 function List() {
-  const list = document.createElement('ul');
-  list.className = 'SortingOptions__list';
-
-  options.forEach((optionLabel) => {
-    const option = SortingOption(optionLabel);
-    list.appendChild(option);
-  });
-
-  return list;
+  const listElements = options.map((optionLabel) => (
+    <SortingOption>{optionLabel}</SortingOption>
+  ));
+  return <ul className="SortingOptions__list">{listElements}</ul>;
 }
 
-function SortingOption(optionLabel) {
-  const option = document.createElement('li');
-  option.className = 'SortingOption';
-
-  const label = document.createElement('label');
-  label.className = 'SortingOption__label';
-
-  const radio = Invisible(RadioInput);
-
-  const text = document.createElement('span');
-  text.className = 'SortingOption__text';
-  text.innerText = optionLabel;
-
-  label.appendChild(radio);
-  label.appendChild(text);
-
-  option.appendChild(label);
-  return option;
+function SortingOption({ children: [optionLabel] }) {
+  return (
+    <li className="SortingOption">
+      <label className="SortingOption__label">
+        <Invisible render={RadioInput} />
+        <span className="SortingOption__text">{optionLabel}</span>
+      </label>
+    </li>
+  );
 }
 
 function RadioInput() {
-  const radio = document.createElement('input');
-  radio.className = 'SortingOption__radio';
-  radio.type = 'radio';
-  radio.name = 'sort';
-  return radio;
+  return <input className="SortingOption__radio" type="radio" name="sort" />;
 }
