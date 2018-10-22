@@ -1,7 +1,7 @@
 import pragma from './pragma';
 
 beforeEach(() => {
-  global.isDevelopment = false;
+  global.__DEBUG__ = false;
 });
 
 describe('dom element', () => {
@@ -20,8 +20,8 @@ describe('dom element', () => {
     expect(result).toStrictEqual(expectedElement);
   });
 
-  test('with invalid properties in development mode', () => {
-    global.isDevelopment = true;
+  test('with invalid properties in debug mode', () => {
+    global.__DEBUG__ = true;
     function harnessFn() {
       pragma('div', { invalidProperty: 'foo' });
     }

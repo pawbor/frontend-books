@@ -4,7 +4,7 @@ export default function registerSW() {
       navigator.serviceWorker
         .register('/service-worker.js')
         .catch(registrationError => {
-          console.log('SW registration failed: ', registrationError);
+          console.error('SW registration failed: ', registrationError);
         });
     });
   }  

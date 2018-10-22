@@ -22,7 +22,7 @@ export default function pragma(type, props, ...children) {
 function createDomElement(type, props, children) {
   const el = document.createElement(type);
 
-  if (isDevelopment) {
+  if (__DEBUG__) {
     validateProps(props, el);
   }
 

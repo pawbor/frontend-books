@@ -32,9 +32,6 @@ module.exports = {
       title: 'Frontend Books',
     }),
     new webpack.HashedModuleIdsPlugin(),
-    new webpack.DefinePlugin({
-      isDevelopment: process.env.NODE_ENV === 'development'
-    }),
     new GenerateSW({
       clientsClaim: true,
       skipWaiting: true,
