@@ -1,0 +1,166 @@
+.ListOfBooks {
+  counter-reset: list-of-books;
+  display: flex;
+  flex-flow: row wrap;
+  list-style: none;
+}
+
+.Book {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.Book::before {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #d7d7d7;
+  counter-increment: list-of-books;
+  content: counter(list-of-books);
+  position: absolute;
+  display: flex;
+  top: 0;
+  left: 0;
+  width: 3.5rem;
+  height: 3.6rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.Book__cover {
+  object-fit: contain;
+}
+
+.Book__property {
+  display: block;
+}
+
+.Book__property--title {
+  --divider-margin: 0.8rem;
+  --divider-width: 0.1rem;
+  font-size: 1.1rem;
+  font-weight: 900;
+  text-align: center;
+  position: relative;
+}
+
+.Book__property--title::after {
+  content: '';
+  display: block;
+  width: 2rem;
+  margin: auto;
+  margin-top: var(--divider-margin);
+  border-bottom: var(--divider-width) solid #eb3324;
+}
+
+.Book__property--author {
+  font-size: 0.9rem;
+
+  font-style: italic;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.Book__property--other {
+  font-size: 0.8rem;
+  font-weight: 900;
+  font-style: italic;
+  color: #9a9a9a;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.Book__property--other + .Book__property--other {
+  margin-top: 0.3rem;
+}
+
+.Book__property--author + .Book__property--other {
+  margin-top: 0.8rem;
+}
+
+.Book__property--other .Book__propertyLabel,
+.Book__property--other .Book__propertyValue {
+  flex: 0 0 50%;
+}
+
+.Book__property--other .Book__propertyLabel {
+  text-align: right;
+  margin-right: 0.5em;
+}
+
+.Book__link {
+  outline: none;
+  text-decoration: none;
+  padding: 0.1rem 0.2rem;
+}
+
+.Book__link:link {
+  color: #eb3324;
+  border-bottom: 1px dashed;
+}
+
+.Book__link:visited {
+  color: #bc281c;
+}
+
+.Book__link:hover,
+.Book__link:focus {
+  border-bottom: 1px solid;
+  background: #f9c1bd;
+}
+
+.Book__link:active {
+  background: #bc281c;
+  color: #f9c1bd;
+}
+
+@media (max-width: 760px) {
+  .Book__cover {
+    margin-left: 4rem;
+    width: 10rem;
+  }
+
+  .Book__properties {
+    width: 14rem;
+    margin-left: 1.5rem;
+  }
+}
+
+@media (min-width: 760px) {
+  .Book {
+    flex-flow: column nowrap;
+    width: 20.5rem;
+    margin-bottom: 1.9rem;
+  }
+
+  .Book__cover {
+    margin-top: 3.3rem;
+    height: 13rem;
+  }
+
+  .Book__properties {
+    margin-top: 1.3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .Book {
+    flex-flow: column nowrap;
+    width: 20.5rem;
+    margin-top: 1.4rem;
+    margin-bottom: 0;
+  }
+
+  .Book__cover {
+    margin-top: 3.5rem;
+  }
+
+  .Book__property--title {
+    --divider-margin: 0.8rem;
+    --divider-width: 0.1rem;
+  }
+}

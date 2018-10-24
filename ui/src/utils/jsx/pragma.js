@@ -61,7 +61,7 @@ function wrapTexts(children) {
 }
 
 function isText(nodeOrText) {
-  return typeof nodeOrText === 'string';
+  return ['string', 'number', 'boolean'].includes(typeof nodeOrText);
 }
 
 function isDomElement(type) {

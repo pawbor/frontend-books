@@ -1,4 +1,4 @@
-body::before {
+.Wireframes::before {
   top: 0;
   content: '';
   display: block;
@@ -12,21 +12,21 @@ body::before {
 }
 
 @media (min-width: 760px) {
-  body::before {
+  .Wireframes::before {
     padding-bottom: calc(3972 / 1520 * 100%);
     background-image: url("./screenshots/760px.png");
   }
 }
 
 @media (min-width: 1024px) {
-  body::before {
+  .Wireframes::before {
     padding-bottom: calc(3190 / 2048 * 100%);
     background-image: url("./screenshots/1024px.png");
   }
 }
 
 @media (min-width: 1680px) {
-  body::before {
+  .Wireframes::before {
     padding-bottom: calc(2232 / 3360 * 100%);
     background-image: url("./screenshots/1680px.png");
   }
