@@ -1,3 +1,5 @@
+import './app-main.component.css'
+
 import jsx from 'utils/jsx';
 import books from './books';
 import ListOfBooks from './list-of-books.component';
