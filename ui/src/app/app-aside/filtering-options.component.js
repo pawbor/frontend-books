@@ -2,7 +2,6 @@ import jsx from 'utils/jsx';
 import { filteringOptionsStore } from 'app/store';
 
 import './filtering-options.component.css';
-
 import ElementWithDivider from './element-with-divider.component';
 
 export default function FilteringOptions() {
@@ -35,16 +34,34 @@ function PagesFilter() {
 function PagesInput() {
   let lastValidValue = undefined;
 
-  return <input className="PagesFilter__input" type="text" oninput={onInput} />;
+  const input = (
+    <input className="PagesFilter__input" type="text" oninput={onInput} />
+  );
+
+  filteringOptionsStore.pagesStream().subscribe({
+    next: updateInput,
+  });
+
+  return input;
+
+  function updateInput(pages) {
+    input.value = textify(pages);
+  }
 
   function onInput(event) {
     const { value } = event.target;
     const invalid = isNaN(value) || value.slice(-1)[0] === '.';
-    if (invalid) {
-      event.target.value = lastValidValue;
+    if (!invalid) {
+      lastValidValue = Number(value);
+    }
+    filteringOptionsStore.setPages(lastValidValue);
+  }
+
+  function textify(pages) {
+    if (pages === null || pages === undefined) {
+      return '';
     } else {
-      lastValidValue = value;
-      filteringOptionsStore.setPages(value);
+      return String(pages);
     }
   }
 }

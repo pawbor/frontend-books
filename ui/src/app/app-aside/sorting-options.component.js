@@ -43,7 +43,7 @@ function SortingOption({ props: { value }, children: [label] }) {
 }
 
 function RadioInput({ props: { value } }) {
-  return (
+  const input = (
     <input
       className="SortingOption__radio"
       type="radio"
@@ -52,6 +52,16 @@ function RadioInput({ props: { value } }) {
       onchange={onChange}
     />
   );
+
+  sortingOptionsStore.sortingPropertyStream().subscribe({
+    next: updateInput,
+  });
+
+  return input;
+
+  function updateInput(sortingProperty) {
+    input.checked = sortingProperty === value;
+  }
 
   function onChange(event) {
     sortingOptionsStore.setSortingProperty(event.target.value);

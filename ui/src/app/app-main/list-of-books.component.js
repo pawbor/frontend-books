@@ -1,18 +1,13 @@
 import jsx from 'utils/jsx';
-import { filteringOptionsStore, sortingOptionsStore } from 'app/store';
+import { listOptionsStore } from 'app/store';
 import Async from 'common/async';
-import { CombineLatestStream } from 'utils/streams';
 
 import './list-of-books.component.css';
 import pagesPredicate from './pages-predicate';
 import booksComparator from './books-comparator';
 
 export default function ListOfBooks({ props: { books } }) {
-  const trigger = CombineLatestStream({
-    pages: filteringOptionsStore.pagesStream(),
-    sortingProperty: sortingOptionsStore.sortingPropertyStream(),
-  });
-
+  const trigger = listOptionsStore.optionsStream();
   return <Async render={renderList} trigger={trigger} />;
 
   function renderList({ pages, sortingProperty }) {

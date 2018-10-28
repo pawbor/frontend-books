@@ -1,4 +1,8 @@
 export {
+  default as listOptionsStore,
+} from './list-options/list-options.store';
+
+export {
   default as filteringOptionsStore,
 } from './filtering-options/filtering-options.store';
 

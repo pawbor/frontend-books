@@ -1,6 +1,7 @@
-import './app-aside.component.css';
-
 import jsx from 'utils/jsx';
+import { listOptionsStore } from 'app/store';
+
+import './app-aside.component.css';
 import SortingOptions from './sorting-options.component';
 import FilteringOptions from './filtering-options.component';
 
@@ -16,8 +17,12 @@ export default function AppAside() {
 
 function ClearButton({ children: [label] }) {
   return (
-    <button className="AppAside__clear" type="button">
+    <button className="AppAside__clear" type="button" onclick={onClick}>
       {label}
     </button>
   );
+
+  function onClick() {
+    listOptionsStore.clearOptions();
+  }
 }
