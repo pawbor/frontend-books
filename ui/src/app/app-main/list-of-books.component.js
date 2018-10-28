@@ -1,15 +1,34 @@
-import './list-of-books.component.css';
-
 import jsx from 'utils/jsx';
+import { filteringOptionsStore, sortingOptionsStore } from 'app/store';
+import Async from 'common/async';
+import { CombineLatestStream } from 'utils/streams';
+
+import './list-of-books.component.css';
+import pagesPredicate from './pages-predicate';
+import booksComparator from './books-comparator';
 
 export default function ListOfBooks({ props: { books } }) {
-  return (
-    <ol className="ListOfBooks">
-      {books.map((book) => (
-        <Book book={book} />
-      ))}
-    </ol>
-  );
+  const trigger = CombineLatestStream({
+    pages: filteringOptionsStore.pagesStream(),
+    sortingProperty: sortingOptionsStore.sortingPropertyStream(),
+  });
+
+  return <Async render={renderList} trigger={trigger} />;
+
+  function renderList({ pages, sortingProperty }) {
+    const predicate = pagesPredicate(pages);
+    const comparator = booksComparator(sortingProperty);
+    const listElements = books
+      .slice()
+      .filter(predicate)
+      .sort(comparator)
+      .map(renderBook);
+    return <ol className="ListOfBooks">{listElements}</ol>;
+  }
+
+  function renderBook(book) {
+    return <Book book={book} />;
+  }
 }
 
 function Book({ props: { book } }) {
@@ -35,7 +54,9 @@ function Book({ props: { book } }) {
         <span className="Book__property Book__property--other Book__property--link">
           <span className="Book__propertyLabel">Link:</span>{' '}
           <span className="Book__propertyValue">
-            <a className="Book__link" href={book.link}>shop</a>
+            <a className="Book__link" href={book.link}>
+              shop
+            </a>
           </span>
         </span>
       </div>

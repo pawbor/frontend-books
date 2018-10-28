@@ -1,10 +1,15 @@
-import './sorting-options.component.css';
-
 import jsx from 'utils/jsx';
+import { SortingProperty, sortingOptionsStore } from 'app/store';
 import Invisible from 'common/invisible/invisible.component';
+
+import './sorting-options.component.css';
 import ElementWithDivider from './element-with-divider.component';
 
-const options = ['ilości stron', 'dacie wydania', 'nazwisku autora'];
+const options = [
+  { optionLabel: 'ilości stron', optionValue: SortingProperty.Pages },
+  { optionLabel: 'dacie wydania', optionValue: SortingProperty.ReleaseDate },
+  { optionLabel: 'nazwisku autora', optionValue: SortingProperty.Author },
+];
 
 export default function SortingOptions() {
   return (
@@ -16,23 +21,39 @@ export default function SortingOptions() {
 }
 
 function List() {
-  const listElements = options.map((optionLabel) => (
-    <SortingOption>{optionLabel}</SortingOption>
+  const listElements = options.map(({ optionValue, optionLabel }) => (
+    <SortingOption value={optionValue}>{optionLabel}</SortingOption>
   ));
   return <ul className="SortingOptions__list">{listElements}</ul>;
 }
 
-function SortingOption({ children: [optionLabel] }) {
+function SortingOption({ props: { value }, children: [label] }) {
   return (
     <li className="SortingOption">
       <label className="SortingOption__label">
-        <Invisible render={RadioInput} />
-        <span className="SortingOption__text">{optionLabel}</span>
+        <Invisible render={renderRadioInput} />
+        <span className="SortingOption__text">{label}</span>
       </label>
     </li>
   );
+
+  function renderRadioInput() {
+    return <RadioInput value={value} />;
+  }
 }
 
-function RadioInput() {
-  return <input className="SortingOption__radio" type="radio" name="sort" />;
+function RadioInput({ props: { value } }) {
+  return (
+    <input
+      className="SortingOption__radio"
+      type="radio"
+      name="sort"
+      value={value}
+      onchange={onChange}
+    />
+  );
+
+  function onChange(event) {
+    sortingOptionsStore.setSortingProperty(event.target.value);
+  }
 }

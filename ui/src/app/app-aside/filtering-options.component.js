@@ -1,6 +1,8 @@
+import jsx from 'utils/jsx';
+import { filteringOptionsStore } from 'app/store';
+
 import './filtering-options.component.css';
 
-import jsx from 'utils/jsx';
 import ElementWithDivider from './element-with-divider.component';
 
 export default function FilteringOptions() {
@@ -24,12 +26,25 @@ function PagesFilter() {
   return (
     <li className="PagesFilter">
       <label className="PagesFilter__label">
-        Powyżej <NumberInput /> stron
+        Powyżej <PagesInput /> stron
       </label>
     </li>
   );
 }
 
-function NumberInput() {
-  return <input className="PagesFilter__input" type="number" />;
+function PagesInput() {
+  let lastValidValue = undefined;
+
+  return <input className="PagesFilter__input" type="text" oninput={onInput} />;
+
+  function onInput(event) {
+    const { value } = event.target;
+    const invalid = isNaN(value) || value.slice(-1)[0] === '.';
+    if (invalid) {
+      event.target.value = lastValidValue;
+    } else {
+      lastValidValue = value;
+      filteringOptionsStore.setPages(value);
+    }
+  }
 }

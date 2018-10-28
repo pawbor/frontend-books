@@ -1,9 +1,5 @@
 import pragma from './pragma';
 
-beforeEach(() => {
-  global.__DEBUG__ = false;
-});
-
 describe('dom element', () => {
   test('simple', () => {
     const expectedElement = document.createElement('div');
@@ -26,6 +22,13 @@ describe('dom element', () => {
       pragma('div', { invalidProperty: 'foo' });
     }
     expect(harnessFn).toThrow(/invalidProperty/);
+  });
+
+  test('null props in debug mode', () => {
+    global.__DEBUG__ = true;
+    const expectedElement = document.createElement('div');
+    const result = pragma('div', null);
+    expect(result).toStrictEqual(expectedElement);
   });
 
   test('with text', () => {

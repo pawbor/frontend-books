@@ -13,7 +13,7 @@ export default function pragma(type, props, ...children) {
   }
 
   if (isCustomElement(type)) {
-    return type({ props, children });
+    return createCustomElement(type, props, children);
   }
 
   throw new Error(`Unsupported element type: ${typeof type}`);
@@ -32,13 +32,22 @@ function createDomElement(type, props, children) {
 }
 
 function validateProps(props, element) {
-  const invalidProps = Object.keys(props).filter(
-    (propName) => !(propName in element)
-  );
+  const invalidType = !isPropsValidType(props);
+  if (invalidType) {
+    throw new Error(`Invalid props type: ${typeof props}`);
+  }
+  const invalidProps = props
+    ? Object.keys(props).filter((propName) => !(propName in element))
+    : [];
 
   if (invalidProps.length) {
     throw new Error(`Invalid element properties: ${invalidProps}`);
   }
+}
+
+function isPropsValidType(props) {
+  // typeof null === 'object'!
+  return ['object', 'undefined'].includes(typeof props);
 }
 
 function setProps(props, element) {
@@ -70,4 +79,8 @@ function isDomElement(type) {
 
 function isCustomElement(type) {
   return typeof type === 'function';
+}
+
+function createCustomElement(type, props, children) {
+  return type({ props, children });
 }
