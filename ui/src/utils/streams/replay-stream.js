@@ -40,6 +40,10 @@ export default function ReplayStream({ initialValue, bufferSize = 0 } = {}) {
     asReadOnly() {
       return ReadOnlyStream(this);
     },
+
+    getSubscriptions() {
+      return notifier.getSubscriptions()
+    }
   };
 }
 

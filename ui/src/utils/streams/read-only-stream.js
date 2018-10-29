@@ -12,5 +12,9 @@ export default function ReadOnlyStream(source, transformation = identity) {
       const transformedSubscription = transformation(subscription);
       return source.subscribe(transformedSubscription);
     },
+
+    getSubscriptions() {
+      return source.getSubscriptions();
+    },
   };
 }

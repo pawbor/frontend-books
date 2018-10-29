@@ -1,37 +1,15 @@
 import { noop } from 'utils/fp';
-import { removeElement } from 'utils/array';
 
 const TypeSymbol = Symbol('subscription');
 
 export default function Subscription(subscriber = { next: noop }) {
-  const children = [];
+  const cleanupList = [];
   let currentNotifier = undefined;
-  let parent = undefined;
 
   return {
     [TypeSymbol]: true,
-    connect(subscription) {
-      children.push(subscription);
-      subscription.setParent(this);
-    },
-    disconnect(subscription) {
-      if (subscription.getParent() !== this) {
-        throw new Error('No parent-child relation');
-      }
-      removeElement(children, subscription);
-      subscription.setParent(undefined);
-    },
-    setParent(subscription) {
-      if (parent && subscription) {
-        throw new Error('Parent is already set');
-      }
-      parent = subscription;
-    },
-    getParent() {
-      return parent;
-    },
-    getChildren() {
-      return children.slice();
+    addCleanup(cleanup) {
+      cleanupList.push(cleanup);
     },
     setNotifier(notifier) {
       if (currentNotifier && notifier) {
@@ -53,11 +31,8 @@ export default function Subscription(subscriber = { next: noop }) {
         throw new Error('Not subscribed');
       }
 
-      if (parent) {
-        parent.disconnect(this);
-      }
       currentNotifier.unsubscribe(this);
-      children.slice().forEach((child) => child.unsubscribe());
+      cleanupList.slice().forEach((cleanup) => cleanup());
     },
   };
 }

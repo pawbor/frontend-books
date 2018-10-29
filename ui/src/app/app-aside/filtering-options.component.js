@@ -45,6 +45,7 @@ function PagesInput() {
   return input;
 
   function updateInput(pages) {
+    lastValidValue = pages;
     input.value = textify(pages);
   }
 

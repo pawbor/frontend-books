@@ -28,7 +28,7 @@ function combineLatestTransformation(subscription) {
         })
       )
       .forEach((subscription) => {
-        transformedSubscription.connect(subscription);
+        transformedSubscription.addCleanup(() => subscription.unsubscribe());
       });
   }
 
