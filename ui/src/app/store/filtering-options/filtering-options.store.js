@@ -5,7 +5,7 @@ const initialState = { pages: 0 };
 const store = Store({ initialState });
 const filteringOptionsStore = {
   setPages(pages) {
-    store.setState({ pages });
+    store.setState({ pages: pages || 0 });
   },
   pagesStream() {
     return store.stateStream().transform(map(({ pages }) => pages));

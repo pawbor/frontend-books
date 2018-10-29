@@ -7,6 +7,9 @@ import './app-main.component.css';
 import ListOfBooks from './list-of-books.component';
 
 export default function AppMain() {
+  listOptionsStore.startLocalStorageSync();
+  //TODO: need some kind of lifecycle hooks for cleanup
+
   const trigger = listOptionsStore.booksStream();
 
   return (
