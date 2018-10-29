@@ -1,4 +1,4 @@
-import { SortingProperty } from 'app/store';
+import SortingProperty from '../sorting-options/sorting-property.enum';
 
 const comparators = {
   [SortingProperty.Pages]: pagesComparator,

@@ -52,6 +52,10 @@ body {
   flex-flow: column nowrap;
 }
 
+.AppHeader {
+  flex: 0 0 auto;
+}
+
 .AppAside {
   order: 2;
   flex: 1 1 auto;

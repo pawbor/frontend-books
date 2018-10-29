@@ -51,7 +51,7 @@ function PagesInput() {
 
   function onInput(event) {
     const { value } = event.target;
-    const invalid = isNaN(value) || value.slice(-1)[0] === '.';
+    const invalid = isNaN(value) || value.includes('.') || value > 9999;
     if (!invalid) {
       lastValidValue = Number(value);
     }

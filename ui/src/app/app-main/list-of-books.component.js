@@ -1,35 +1,62 @@
 import jsx from 'utils/jsx';
-import { listOptionsStore } from 'app/store';
-import Async from 'common/async';
 
 import './list-of-books.component.css';
-import pagesPredicate from './pages-predicate';
-import booksComparator from './books-comparator';
+import { ReplayStream } from 'utils/streams';
 
 export default function ListOfBooks({ props: { books } }) {
-  const trigger = listOptionsStore.optionsStream();
-  return <Async render={renderList} trigger={trigger} />;
+  const modalBookStream = ReplayStream({
+    initialValue: undefined,
+    bufferSize: 1,
+  });
 
-  function renderList({ pages, sortingProperty }) {
-    const predicate = pagesPredicate(pages);
-    const comparator = booksComparator(sortingProperty);
-    const listElements = books
-      .slice()
-      .filter(predicate)
-      .sort(comparator)
-      .map(renderBook);
-    return <ol className="ListOfBooks">{listElements}</ol>;
-  }
+  let modal = undefined;
+
+  modalBookStream.subscribe({ next: renderModal });
+  const listElements = books.map(renderBook);
+  return <ol className="ListOfBooks">{listElements}</ol>;
 
   function renderBook(book) {
-    return <Book book={book} />;
+    return <Book book={book} onCoverClick={openCoverModal} />;
+  }
+
+  function renderModal(book) {
+    const body = document.querySelector('body');
+
+    if (modal) {
+      modal.remove();
+      body.classList.remove('Modal__background');
+    }
+
+    if (book) {
+      modal = (
+        <div className="Modal" onclick={closeCoverModal}>
+          <div className="Modal__contentWrapper">
+            <img className="Modal__content" src={book.cover.large} />
+          </div>
+        </div>
+      );
+      body.appendChild(modal);
+      body.classList.add('Modal__background');
+    }
+  }
+
+  function openCoverModal(book) {
+    modalBookStream.next(book);
+  }
+
+  function closeCoverModal() {
+    modalBookStream.next(undefined);
   }
 }
 
-function Book({ props: { book } }) {
+function Book({ props: { book, onCoverClick } }) {
   return (
     <li className="Book">
-      <img className="Book__cover" src={book.cover.small} />
+      <img
+        className="Book__cover"
+        src={book.cover.small}
+        onclick={() => onCoverClick(book)}
+      />
       <div className="Book__properties">
         <span className="Book__property Book__property--title">
           <span className="Book__propertyValue">{book.title}</span>
