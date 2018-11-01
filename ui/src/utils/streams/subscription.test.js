@@ -6,30 +6,30 @@ import Notifier from './notifier';
 describe('Subscription', () => {
   test('with subscriber', () => {
     const subscriber = { next: noop };
-    const subscription = Subscription(subscriber);
+    const subscription = new Subscription(subscriber);
     expect(subscription.getSubscriber()).toBe(subscriber);
   });
 
   test('with default subscriber', () => {
-    const subscription = Subscription();
+    const subscription = new Subscription();
     expect(subscription.getSubscriber()).toHaveProperty('next');
   });
 });
 
 describe('setNotifier', () => {
   test('sets notifier', () => {
-    const notifier = Notifier();
-    const sub = Subscription();
+    const notifier = new Notifier();
+    const sub = new Subscription();
     sub.setNotifier(notifier);
     expect(sub.getNotifier()).toBe(notifier);
   });
 
   test('fails if has notofier', () => {
-    const notifier = Notifier();
-    const sub = Subscription();
+    const notifier = new Notifier();
+    const sub = new Subscription();
     sub.setNotifier(notifier);
     function harnessFn() {
-      const tryNotifier = Notifier();
+      const tryNotifier = new Notifier();
       sub.setNotifier(tryNotifier);
     }
     expect(harnessFn).toThrowError('Notifier is already set');
@@ -38,7 +38,7 @@ describe('setNotifier', () => {
 
 describe('unsubscribe', () => {
   test('unsubscribes from notifier', () => {
-    const notifier = Notifier();
+    const notifier = new Notifier();
     const sub = notifier.subscribe();
     sub.unsubscribe();
     expect(sub.getNotifier()).toBeUndefined();
@@ -46,7 +46,7 @@ describe('unsubscribe', () => {
   });
 
   test('Executes cleanup', () => {
-    const notifier = Notifier();
+    const notifier = new Notifier();
     const sub = notifier.subscribe();
     const cleanupList = Array.from({ length: 5 }, () => jest.fn());
     cleanupList.forEach((cleanup) => {
@@ -62,7 +62,7 @@ describe('unsubscribe', () => {
 describe('next', () => {
   test('notifies subscriber', () => {
     const next = jest.fn();
-    const subscription = Subscription({ next });
+    const subscription = new Subscription({ next });
     const emittedValue = 'foo';
     subscription.next(emittedValue);
     expect(next).toHaveBeenCalledTimes(1);
@@ -71,7 +71,7 @@ describe('next', () => {
 
   describe('no subscriber', () => {
     test("won't fail", () => {
-      const subscription = Subscription();
+      const subscription = new Subscription();
       const emittedValue = 'foo';
       function harnessFn() {
         subscription.next(emittedValue);

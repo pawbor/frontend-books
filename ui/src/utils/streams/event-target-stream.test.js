@@ -58,6 +58,7 @@ test('emits matching events', () => {
 });
 
 function fakeEventTarget() {
+  /** @type {{type: string, listener: Function}[]} */
   const listenerRecords = [];
 
   return {
@@ -68,7 +69,7 @@ function fakeEventTarget() {
     removeEventListener: jest.fn((type, listener) => {
       listenerRecords
         .filter(
-          ({ otherType, otherListener }) =>
+          ({ type: otherType, listener: otherListener }) =>
             type === otherType && listener === otherListener
         )
         .forEach((match) => removeElement(listenerRecords, match));

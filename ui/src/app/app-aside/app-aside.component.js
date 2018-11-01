@@ -17,6 +17,11 @@ export default function AppAside() {
   );
 }
 
+/**
+ * @param {Object} param0
+ * @param {Object} param0.props
+ * @param {import('utils/jsx/types').JsxChild[]} param0.children
+ */
 function ClearButton({ children: [label] }) {
   EventTargetStream(document, 'keyup')
     .transform(filter((event) => event.altKey && event.key === 'r'))

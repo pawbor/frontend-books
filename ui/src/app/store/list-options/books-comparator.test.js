@@ -19,8 +19,11 @@ test('sorting by pages', () => {
   const result = booksToSort.slice().sort(predicate);
   expect(result).toEqual(expectedResult);
 
+  /**
+   * @param {number} pages
+   */
   function BookWithPages(pages) {
-    return { pages };
+    return Object.assign(emptyBook(), { pages });
   }
 });
 
@@ -42,8 +45,11 @@ test('sorting by author', () => {
   const result = booksToSort.slice().sort(predicate);
   expect(result).toEqual(expectedResult);
 
+  /**
+   * @param {string} author
+   */
   function BookWithAuthor(author) {
-    return { author };
+    return Object.assign(emptyBook(), { author });
   }
 });
 
@@ -65,8 +71,24 @@ test('sorting by release date', () => {
   const result = booksToSort.slice().sort(predicate);
   expect(result).toEqual(expectedResult);
 
+  /**
+   * @param {string} releaseDate
+   */
   function BookWithReleaseDate(releaseDate) {
-    return { releaseDate };
+    return Object.assign(emptyBook(), { releaseDate });
   }
 });
 
+/**
+ * @returns {import('app/types').Book}
+ */
+function emptyBook() {
+  return {
+    author: '',
+    cover: { large: '', small: '' },
+    link: '',
+    pages: 0,
+    releaseDate: '',
+    title: '',
+  };
+}

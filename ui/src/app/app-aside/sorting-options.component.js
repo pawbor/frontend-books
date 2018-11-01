@@ -4,11 +4,24 @@ import Invisible from 'common/invisible/invisible.component';
 
 import './sorting-options.component.css';
 import ElementWithDivider from './element-with-divider.component';
+import { Maybe } from 'utils/fp';
 
 const options = [
-  { optionLabel: 'ilości stron', optionValue: SortingProperty.Pages },
-  { optionLabel: 'dacie wydania', optionValue: SortingProperty.ReleaseDate },
-  { optionLabel: 'nazwisku autora', optionValue: SortingProperty.Author },
+  {
+    optionClass: 'SortingOptions__pages',
+    optionLabel: 'ilości stron',
+    optionValue: SortingProperty.Pages,
+  },
+  {
+    optionClass: 'SortingOptions__releaseDate',
+    optionLabel: 'dacie wydania',
+    optionValue: SortingProperty.ReleaseDate,
+  },
+  {
+    optionClass: 'SortingOptions__author',
+    optionLabel: 'nazwisku autora',
+    optionValue: SortingProperty.Author,
+  },
 ];
 
 export default function SortingOptions() {
@@ -21,13 +34,24 @@ export default function SortingOptions() {
 }
 
 function List() {
-  const listElements = options.map(({ optionValue, optionLabel }) => (
-    <SortingOption value={optionValue}>{optionLabel}</SortingOption>
-  ));
+  const listElements = options.map(
+    ({ optionValue, optionLabel, optionClass }) => (
+      <SortingOption value={optionValue} className={optionClass}>
+        {optionLabel}
+      </SortingOption>
+    )
+  );
   return <ul className="SortingOptions__list">{listElements}</ul>;
 }
 
-function SortingOption({ props: { value }, children: [label] }) {
+/**
+ * @param {Object} param0
+ * @param {Object} param0.props
+ * @param {import('app/store').SortingProperty} param0.props.value
+ * @param {string} param0.props.className
+ * @param {import('utils/jsx/types').JsxChild[]} param0.children
+ */
+function SortingOption({ props: { value, className }, children: [label] }) {
   return (
     <li className="SortingOption">
       <label className="SortingOption__label">
@@ -38,14 +62,20 @@ function SortingOption({ props: { value }, children: [label] }) {
   );
 
   function renderRadioInput() {
-    return <RadioInput value={value} />;
+    return <RadioInput value={value} className={className} />;
   }
 }
 
-function RadioInput({ props: { value } }) {
+/**
+ * @param {Object} param0
+ * @param {Object} param0.props
+ * @param {import('app/store').SortingProperty} param0.props.value
+ * @param {string} param0.props.className
+ */
+function RadioInput({ props: { value, className } }) {
   const input = (
     <input
-      className="SortingOption__radio"
+      className={`SortingOption__radio ${className}`}
       type="radio"
       name="sort"
       value={value}
@@ -59,11 +89,21 @@ function RadioInput({ props: { value } }) {
 
   return input;
 
+  /**
+   * @param {import('app/store').SortingProperty} sortingProperty
+   */
   function updateInput(sortingProperty) {
     input.checked = sortingProperty === value;
   }
 
+  /**
+   * @param {Event} event
+   */
   function onChange(event) {
-    sortingOptionsStore.setSortingProperty(event.target.value);
+    const value = new Maybe(event.target)
+      .map((et) => (et instanceof HTMLInputElement ? et : null))
+      .map(({ value }) => value)
+      .getValue(SortingProperty.None);
+    sortingOptionsStore.setSortingProperty(value);
   }
 }

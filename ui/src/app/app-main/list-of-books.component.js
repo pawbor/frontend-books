@@ -1,29 +1,44 @@
 import jsx from 'utils/jsx';
-
-import './list-of-books.component.css';
 import { ReplayStream } from 'utils/streams';
 
+import './list-of-books.component.css';
+
+/**
+ * @param {Object} param0
+ * @param {Object} param0.props
+ * @param {import('app/types').Book[]} param0.props.books
+ */
 export default function ListOfBooks({ props: { books } }) {
-  const modalBookStream = ReplayStream({
+  /** @type {ReplayStream<import('app/types').Book | undefined>} */
+  const modalBookStream = new ReplayStream({
     initialValue: undefined,
     bufferSize: 1,
   });
 
+  /** @type {HTMLElement | undefined} */
   let modal = undefined;
 
   modalBookStream.subscribe({ next: renderModal });
+
   const listElements = books.map(renderBook);
   return <ol className="ListOfBooks">{listElements}</ol>;
 
+  /**
+   * @param {import('app/types').Book} book
+   */
   function renderBook(book) {
     return <Book book={book} onCoverClick={openCoverModal} />;
   }
 
+  /**
+   * @param {import('app/types').Book | undefined} book
+   */
   function renderModal(book) {
-    const body = document.querySelector('body');
+    const { body } = document;
 
     if (modal) {
       modal.remove();
+      modal = undefined;
       body.classList.remove('Modal__background');
     }
 
@@ -35,11 +50,17 @@ export default function ListOfBooks({ props: { books } }) {
           </div>
         </div>
       );
+    }
+
+    if (modal) {
       body.appendChild(modal);
       body.classList.add('Modal__background');
     }
   }
 
+  /**
+   * @param {import('app/types').Book} book
+   */
   function openCoverModal(book) {
     modalBookStream.next(book);
   }
@@ -49,6 +70,12 @@ export default function ListOfBooks({ props: { books } }) {
   }
 }
 
+/**
+ * @param {Object} param0
+ * @param {Object} param0.props
+ * @param {import('app/types').Book} param0.props.book
+ * @param {Function} param0.props.onCoverClick
+ */
 function Book({ props: { book, onCoverClick } }) {
   return (
     <li className="Book">

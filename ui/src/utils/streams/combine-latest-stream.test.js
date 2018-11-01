@@ -3,7 +3,7 @@ import ReplayStream from './replay-stream';
 
 describe('subscribe', () => {
   test('subscribes to each stream', () => {
-    const s1 = ReplayStream();
+    const s1 = new ReplayStream();
     const stream = CombineLatestStream({ s1 });
     stream.subscribe();
     expect(s1.getSubscriptions()).toHaveLength(1);
@@ -12,7 +12,7 @@ describe('subscribe', () => {
 
 describe('unsubscribe', () => {
   test('unsubscribes from all streams', () => {
-    const s1 = ReplayStream();
+    const s1 = new ReplayStream();
     const stream = CombineLatestStream({ s1 });
     stream.subscribe().unsubscribe();
     expect(s1.getSubscriptions()).toHaveLength(0);
@@ -20,9 +20,9 @@ describe('unsubscribe', () => {
 });
 
 test('starts to emit after each stream emits at least once', () => {
-  const s1 = ReplayStream();
-  const s2 = ReplayStream();
-  const s3 = ReplayStream();
+  const s1 = new ReplayStream();
+  const s2 = new ReplayStream();
+  const s3 = new ReplayStream();
   const stream = CombineLatestStream({
     s1,
     s2,
@@ -67,8 +67,8 @@ test('emitted value is combination of latest value from each stream ', () => {
     { s1: 4, s2: 'd' },
   ];
 
-  const s1 = ReplayStream();
-  const s2 = ReplayStream();
+  const s1 = new ReplayStream();
+  const s2 = new ReplayStream();
   const stream = CombineLatestStream({ s1, s2 });
   const next = jest.fn();
   stream.subscribe({ next });
@@ -101,8 +101,8 @@ test("multiple subscribers don't impact each other", () => {
 
   const expectedNumberOfCombinations = [7, 5, 3, 1];
 
-  const s1 = ReplayStream();
-  const s2 = ReplayStream();
+  const s1 = new ReplayStream();
+  const s2 = new ReplayStream();
   const stream = CombineLatestStream({ s1, s2 });
 
   const nextFns = updates.map(({ v1, v2 }) => {

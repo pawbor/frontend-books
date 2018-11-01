@@ -15,6 +15,7 @@ test('filtering above limit', () => {
   expect(result).toEqual(expectedResult);
 });
 
+/** @param {number} pages */
 function BookWithPages(pages) {
   return { pages };
 }

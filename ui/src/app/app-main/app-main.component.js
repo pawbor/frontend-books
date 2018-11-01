@@ -1,6 +1,5 @@
 import jsx from 'utils/jsx';
 
-import Async from 'common/async';
 import { listOptionsStore } from 'app/store';
 
 import './app-main.component.css';
@@ -10,15 +9,16 @@ export default function AppMain() {
   listOptionsStore.startLocalStorageSync();
   //TODO: need some kind of lifecycle hooks for cleanup
 
-  const trigger = listOptionsStore.booksStream();
+  
+  const main = <main className="AppMain" />;
+  listOptionsStore.booksStream().subscribe({ next: renderList });
+  return main;
 
-  return (
-    <main className="AppMain">
-      <Async render={renderList} trigger={trigger} />
-    </main>
-  );
-
+  /**
+   * @param {import('app/types').Book[]} books
+   */
   function renderList(books) {
-    return <ListOfBooks books={books} />;
+    main.innerHTML = '';
+    main.appendChild(<ListOfBooks books={books} />);
   }
 }

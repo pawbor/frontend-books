@@ -7,8 +7,8 @@ test('pipe() returns identity', () => {
 });
 
 test('pipe(fn1, fn2) is like x => fn2(fn1(x))', () => {
-  const add2 = (x) => x + 2;
-  const multiply3 = (x) => x * 3;
+  const add2 = (/** @type {number} */x) => x + 2;
+  const multiply3 = (/** @type {number} */x) => x * 3;
 
   const result1 = pipe(
     add2,

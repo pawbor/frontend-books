@@ -2,8 +2,9 @@ import { Store } from 'utils/store';
 import { map } from 'utils/streams/transformations';
 
 const initialState = { pages: 0 };
-const store = Store({ initialState });
+const store = new Store({ initialState });
 const filteringOptionsStore = {
+  /** @param {number} pages */
   setPages(pages) {
     store.setState({ pages: pages || 0 });
   },

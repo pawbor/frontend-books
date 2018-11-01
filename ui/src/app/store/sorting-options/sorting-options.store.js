@@ -1,11 +1,12 @@
 import { Store } from 'utils/store';
 import { map } from 'utils/streams/transformations';
+import SortingProperty from './sorting-property.enum';
 
-const initialState = { property: undefined };
-const store = Store({ initialState });
+const initialState = { property: SortingProperty.None };
+const store = new Store({ initialState });
 const sortingOptionsStore = {
-  setSortingProperty(property) {
-    store.setState({ property: property || undefined });
+  setSortingProperty(/** @type {SortingProperty} */ property) {
+    store.setState({ property });
   },
   sortingPropertyStream() {
     return store.stateStream().transform(map(({ property }) => property));

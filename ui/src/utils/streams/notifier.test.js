@@ -6,7 +6,7 @@ import Notifier from './notifier';
 
 describe('subscribe', () => {
   test('adds empty subscription', () => {
-    const notifier = Notifier();
+    const notifier = new Notifier();
     const sub = notifier.subscribe();
     expect(notifier.getSubscriptions()).toEqual([sub]);
     expect(sub.getNotifier()).toBe(notifier);
@@ -14,7 +14,7 @@ describe('subscribe', () => {
 
   test('adds subscription with subscriber', () => {
     const subscriber = { next: noop };
-    const notifier = Notifier();
+    const notifier = new Notifier();
     const sub = notifier.subscribe(subscriber);
     expect(sub.getSubscriber()).toBe(subscriber);
   });
@@ -34,7 +34,7 @@ describe('unsubscribe', () => {
   describe('not subscribed', () => {
     test('throws error', () => {
       const { notifier } = prepareNotifierWithSubscriptions();
-      const subscription = Subscription();
+      const subscription = new Subscription();
 
       function harnessFn() {
         notifier.unsubscribe(subscription);
@@ -57,7 +57,7 @@ describe('notify', () => {
 });
 
 function prepareNotifierWithSubscriptions() {
-  const notifier = Notifier();
+  const notifier = new Notifier();
   const subscriptions = Array.from({ length: 5 }, () => {
     const sub = notifier.subscribe();
     jest.spyOn(sub, 'next');

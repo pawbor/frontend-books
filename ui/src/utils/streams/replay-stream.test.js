@@ -3,6 +3,7 @@ import { withoutElement } from 'utils/array';
 import ReplayStream from './replay-stream';
 
 describe('subscription', () => {
+  /** @type {import('./types').Subscriber<any>} */
   let testSubscriber;
 
   beforeEach(() => {
@@ -11,7 +12,7 @@ describe('subscription', () => {
 
   test('single emit', () => {
     const emittedValue = 'foo';
-    const stream = ReplayStream();
+    const stream = new ReplayStream();
     stream.subscribe(testSubscriber);
     stream.next(emittedValue);
 
@@ -22,7 +23,7 @@ describe('subscription', () => {
   test('unsubscribe', () => {
     const emittedBefore = 'foo';
     const emittedAfter = 'bar';
-    const stream = ReplayStream();
+    const stream = new ReplayStream();
 
     const subscriptions = Array.from({ length: 5 }, () => {
       const subscription = stream.subscribe();
@@ -48,7 +49,7 @@ describe('subscription', () => {
   });
 
   test('with asReadOnly', () => {
-    const stream = ReplayStream({ initialValue: 1, bufferSize: 2 });
+    const stream = new ReplayStream({ initialValue: 1, bufferSize: 2 });
     stream.next(2);
     const subscription = stream.asReadOnly().subscribe(testSubscriber);
     stream.next(3);
@@ -63,7 +64,7 @@ describe('subscription', () => {
 
   test('buffered emits', () => {
     const emittedValues = ['foo', 'bar', 'baz'];
-    const stream = ReplayStream({ bufferSize: emittedValues.length });
+    const stream = new ReplayStream({ bufferSize: emittedValues.length });
     emittedValues.forEach((v) => {
       stream.next(v);
     });
@@ -79,7 +80,7 @@ describe('subscription', () => {
     const emittedValues = ['foo', 'bar', 'baz'];
     const overflow = 1;
     const bufferSize = emittedValues.length - overflow;
-    const stream = ReplayStream({
+    const stream = new ReplayStream({
       bufferSize,
     });
     emittedValues.forEach((v) => {
@@ -95,7 +96,7 @@ describe('subscription', () => {
 
   test('no buffer by default', () => {
     const emittedValues = ['foo', 'bar', 'baz'];
-    const stream = ReplayStream();
+    const stream = new ReplayStream();
     emittedValues.forEach((v) => {
       stream.next(v);
     });
@@ -105,7 +106,7 @@ describe('subscription', () => {
   });
 
   test('empty buffer', () => {
-    const stream = ReplayStream({
+    const stream = new ReplayStream({
       bufferSize: 5,
     });
     stream.subscribe(testSubscriber);
@@ -115,7 +116,7 @@ describe('subscription', () => {
 
   test('initial value, buffer', () => {
     const initialValue = 'foo';
-    const stream = ReplayStream({
+    const stream = new ReplayStream({
       initialValue,
       bufferSize: 5,
     });
@@ -126,7 +127,7 @@ describe('subscription', () => {
   });
 
   test('initial value, no buffer', () => {
-    const stream = ReplayStream({
+    const stream = new ReplayStream({
       initialValue: 'foo',
       bufferSize: 0,
     });
@@ -136,10 +137,10 @@ describe('subscription', () => {
   });
 
   test('initial value, no buffer, debug mode', () => {
-    global.__DEBUG__ = true;
+    __DEBUG__ = true;
 
     function harnessFn() {
-      ReplayStream({
+      new ReplayStream({
         initialValue: 'foo',
         bufferSize: 0,
       });
@@ -149,7 +150,7 @@ describe('subscription', () => {
   });
 
   test('implicitly undefined initial value', () => {
-    const stream = ReplayStream({
+    const stream = new ReplayStream({
       bufferSize: 1,
     });
     stream.subscribe(testSubscriber);
@@ -158,7 +159,7 @@ describe('subscription', () => {
   });
 
   test('explicitly undefined initial value', () => {
-    const stream = ReplayStream({
+    const stream = new ReplayStream({
       initialValue: undefined,
       bufferSize: 1,
     });
@@ -168,7 +169,7 @@ describe('subscription', () => {
   });
 
   test('null initial value', () => {
-    const stream = ReplayStream({
+    const stream = new ReplayStream({
       initialValue: null,
       bufferSize: 1,
     });
@@ -181,7 +182,7 @@ describe('subscription', () => {
 
 describe('asReadOnly', () => {
   test('hidden properties', () => {
-    const stream = ReplayStream({
+    const stream = new ReplayStream({
       initialValue: null,
       bufferSize: 1,
     }).asReadOnly();

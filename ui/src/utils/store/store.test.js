@@ -1,6 +1,7 @@
 import Store from './store';
 
 describe('state changes stream', () => {
+  /** @type {import('utils/streams/types').Subscriber<number>} */
   let subscriber;
 
   beforeEach(() => {
@@ -9,7 +10,7 @@ describe('state changes stream', () => {
 
   test('initial state', () => {
     const initialState = 10;
-    const store = Store({ initialState });
+    const store = new Store({ initialState });
     store.stateStream().subscribe(subscriber);
     expect(subscriber.next).toHaveBeenCalledTimes(1);
     expect(subscriber.next).toHaveBeenCalledWith(initialState);
@@ -17,7 +18,7 @@ describe('state changes stream', () => {
 
   test('buffered state', () => {
     const bufferedState = 10;
-    const store = Store({ initialState: 5 });
+    const store = new Store({ initialState: 5 });
     store.setState(bufferedState);
     store.stateStream().subscribe(subscriber);
     expect(subscriber.next).toHaveBeenCalledTimes(1);
@@ -26,7 +27,7 @@ describe('state changes stream', () => {
 
   test('emited state', () => {
     const emittedState = 10;
-    const store = Store({ initialState: 5 });
+    const store = new Store({ initialState: 5 });
     store.stateStream().subscribe(subscriber);
     store.setState(emittedState);
     expect(subscriber.next).toHaveBeenCalledTimes(2);
@@ -37,13 +38,13 @@ describe('state changes stream', () => {
 describe('get current state', () => {
   test('initial state', () => {
     const initialState = 10;
-    const store = Store({ initialState });
+    const store = new Store({ initialState });
     expect(store.getState()).toBe(initialState);
   });
 
   test('updated state', () => {
     const updatedState = 10;
-    const store = Store({ initialState: 5 });
+    const store = new Store({ initialState: 5 });
     store.setState(updatedState);
     expect(store.getState()).toBe(updatedState);
   });
