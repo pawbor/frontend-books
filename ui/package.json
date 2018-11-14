@@ -13,7 +13,9 @@
     "build:dev": "webpack --config webpack.dev.js",
     "test": "jest",
     "test:watch": "jest --watch",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "static": "tsc -p jsconfig.json",
+    "validate": "npm run lint && npm run static && npm test"
   },
   "keywords": [],
   "author": "",

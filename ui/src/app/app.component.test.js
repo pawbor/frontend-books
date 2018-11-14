@@ -12,7 +12,7 @@ describe('first render', () => {
   beforeEach(() => {
     const { body: root } = document;
     const app = <App />;
-    jsx.renderDom(app, root);
+    jsx.render(app, root);
     appPageObject = AppPageObject(root);
   });
 
@@ -23,7 +23,7 @@ describe('first render', () => {
 
   test('contains pages filter input', () => {
     const element = appPageObject.queryPagesFilterInput();
-    expect(element.getValue(null)).toBeTruthy();
+    expect(element.getRawValue()).toBeTruthy();
   });
 
   test('contains 3 sorting radio buttons', () => {

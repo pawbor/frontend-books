@@ -1,24 +1,26 @@
-import jsx from 'utils/jsx';
-
 import { listOptionsStore } from 'app/store';
+import hookStream from 'common/hook-stream';
+import jsx from 'utils/jsx';
+import { sameContent } from 'utils/array';
 
 import './app-main.component.css';
 import ListOfBooks from './list-of-books.component';
 
 export default function AppMain() {
   listOptionsStore.startLocalStorageSync();
-  //TODO: need some kind of lifecycle hooks for cleanup
 
-  
-  const main = <main className="AppMain" />;
-  listOptionsStore.booksStream().subscribe({ next: renderList });
-  return main;
+  /** @type {import('app/types').Book[]} */
+  const initialBooks = [];
 
-  /**
-   * @param {import('app/types').Book[]} books
-   */
-  function renderList(books) {
-    main.innerHTML = '';
-    main.appendChild(<ListOfBooks books={books} />);
-  }
+  const books = hookStream(
+    listOptionsStore.booksStream(),
+    initialBooks,
+    sameContent
+  );
+
+  return (
+    <main className="AppMain">
+      <ListOfBooks books={books} />
+    </main>
+  );
 }

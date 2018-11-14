@@ -1,4 +1,4 @@
-import Subscription from './subscription';
+import Notifier from './notifier';
 
 /**
  * @template SourceT, InternalT
@@ -51,17 +51,22 @@ export default class ReadOnlyStream {
   }
 
   /**
-   * @param {import('./types').Subscriber<InternalT> | undefined} [subscriber]
-   * @returns {Subscription<InternalT>}
+   * @param {import('./types').SubscriptionLike<InternalT>} [subscriber]
+   * @returns {import('./subscription').default<InternalT>}
    */
   subscribe(subscriber) {
     const { source, transformation } = getPrivates(this);
-    const subscription = new Subscription(subscriber);
-    const transformedSubscription = transformation(subscription);
-    return source.subscribe(transformedSubscription);
+    const notifier = new Notifier();
+    const subscription = notifier.subscribe(subscriber);
+    let transformedSubscription = transformation(notifier);
+    transformedSubscription = source.subscribe(transformedSubscription);
+    subscription.addCleanup(() => {
+      transformedSubscription.unsubscribe();
+    });
+    return subscription;
   }
 
-  /** @returns {Subscription<InternalT>[]} */
+  /** @returns {import('./subscription').default<InternalT>[]} */
   getSubscriptions() {
     const { source } = getPrivates(this);
     return source.getSubscriptions();

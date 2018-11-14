@@ -5,8 +5,7 @@ import { map } from 'utils/streams/transformations';
 import filteringOptionsStore from '../filtering-options/filtering-options.store';
 import sortingOptionsStore from '../sorting-options/sorting-options.store';
 import SortingProperty from '../sorting-options/sorting-property.enum';
-// @ts-ignore
-import books from './books';
+import books from './books.json';
 import booksComparator from './books-comparator';
 import pagesPredicate from './pages-predicate';
 

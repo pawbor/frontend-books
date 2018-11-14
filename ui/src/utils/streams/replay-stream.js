@@ -1,11 +1,10 @@
-import { identity } from 'utils/fp';
-
 import Notifier from './notifier';
 import ReadOnlyStream from './read-only-stream';
+import Subscription from './subscription';
 
 /**
  * @template T
- * @typedef {Object} Params
+ * @typedef {Object} ReplayStreamParams
  * @property {T} [initialValue]
  * @property {number} [bufferSize]
  */
@@ -35,7 +34,7 @@ function getPrivates(/** @type {ReplayStream<T>} */ instance) {
  */
 export default class ReplayStream {
   /**
-   * @param {Params<T>} param0
+   * @param {ReplayStreamParams<T>} param0
    */
   constructor({ initialValue, bufferSize = 0 } = {}) {
     /** @type {Notifier<T>} */
@@ -61,7 +60,7 @@ export default class ReplayStream {
   }
 
   /**
-   * @param {import('./types').Subscriber<T> | undefined} [subscriber]
+   * @param {import('./types').SubscriptionLike<T>} [subscriber]
    * @returns {import('./subscription').default<T>}
    */
   subscribe(subscriber) {
@@ -78,7 +77,7 @@ export default class ReplayStream {
     if (bufferSize < buffer.length) {
       buffer.shift();
     }
-    notifier.notify(value);
+    notifier.next(value);
   }
 
   // TODO: error handling
@@ -97,7 +96,10 @@ export default class ReplayStream {
 
   /** @returns {import('./types').Stream<T>} */
   asReadOnly() {
-    return new ReadOnlyStream(this, identity);
+    return new ReadOnlyStream(
+      this,
+      (subscriber) => new Subscription(subscriber)
+    );
   }
 
   /**

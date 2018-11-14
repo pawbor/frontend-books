@@ -44,11 +44,11 @@ describe('unsubscribe', () => {
   });
 });
 
-describe('notify', () => {
+describe('next', () => {
   test('notifies all subscriptions', () => {
     const { notifier, subscriptions } = prepareNotifierWithSubscriptions();
     const emittedValue = 'foo';
-    notifier.notify(emittedValue);
+    notifier.next(emittedValue);
     subscriptions.forEach((sub) => {
       expect(sub.next).toHaveBeenCalledTimes(1);
       expect(sub.next).toHaveBeenCalledWith(emittedValue);

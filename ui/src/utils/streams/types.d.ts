@@ -1,9 +1,10 @@
-import { Mapping } from 'utils/fp';
+import { Mapping } from 'utils/fp/types';
 
-import Subscription, { Subscriber } from './subscription';
+import Subscription from './subscription';
+import Notifier from './notifier';
 
 export type Transformation<ExternalT, InternalT> = Mapping<
-  Subscription<ExternalT>,
+  SubscriptionLike<ExternalT>,
   Subscription<InternalT>
 >;
 
@@ -12,7 +13,7 @@ export interface Stream<InternalT> {
     transformation: Transformation<ExternalT, InternalT>
   ): Stream<ExternalT>;
 
-  subscribe(subscriber?: Subscriber<InternalT>): Subscription<InternalT>;
+  subscribe(subscriber?: SubscriptionLike<InternalT>): Subscription<InternalT>;
 
   getSubscriptions(): Subscription<InternalT>[];
 }
@@ -20,3 +21,5 @@ export interface Stream<InternalT> {
 export interface Subscriber<T> {
   next(v: T): void;
 }
+
+export type SubscriptionLike<T> = Subscriber<T> | Subscription<T>;

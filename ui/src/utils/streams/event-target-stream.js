@@ -2,6 +2,13 @@ import ReplayStream from './replay-stream';
 import Subscription from './subscription';
 
 /**
+ * @typedef {Object} InternalConfig
+ * @prop {EventTarget} eventTarget
+ * @prop {string} type
+ * @prop {AddEventListenerOptions | boolean | undefined} options
+ */
+
+/**
  * @param {EventTarget} eventTarget
  * @param {string} type
  * @param {AddEventListenerOptions | boolean | undefined} [options]
@@ -15,7 +22,7 @@ export default function EventTargetStream(eventTarget, type, options) {
 }
 
 /**
- * @param {Subscription<Event>} subscription
+ * @type {import('./types').Transformation<Event, InternalConfig>}
  */
 function eventTargetTransformation(subscription) {
   const transformedSubscription = new Subscription({
@@ -25,11 +32,7 @@ function eventTargetTransformation(subscription) {
   return transformedSubscription;
 
   /**
-   *
-   * @param {Object} param0
-   * @param {EventTarget} param0.eventTarget
-   * @param {string} param0.type
-   * @param {AddEventListenerOptions | boolean | undefined} param0.options
+   * @param {InternalConfig} param0
    */
   function attachListener({ eventTarget, type, options }) {
     eventTarget.addEventListener(type, listener, options);

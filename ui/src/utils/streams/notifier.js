@@ -1,4 +1,4 @@
-import { removeElement } from 'utils/array';
+import { withoutElement } from 'utils/array';
 import Subscription from './subscription';
 
 /**
@@ -9,6 +9,15 @@ import Subscription from './subscription';
 
 /** @type {WeakMap<Notifier<any>, Privates<any>>} */
 const privatesMap = new WeakMap();
+
+/** @template T @returns {Privates<T>} */
+function getPrivates(/** @type {Notifier<T>} */ notifier) {
+  const privates = privatesMap.get(notifier);
+  if (!privates) {
+    throw new Error('Notifier - Missing privates');
+  }
+  return privates;
+}
 
 /**
  * @template T
@@ -22,13 +31,14 @@ export default class Notifier {
     privatesMap.set(this, privates);
   }
 
-  /** @param {import('./types').Subscriber<T> | undefined} [subscriber]*/
+  /** @param {import('./types').SubscriptionLike<T>} [subscriber]*/
   subscribe(subscriber) {
     const subscription = Subscription.isSubscription(subscriber)
       ? subscriber
       : new Subscription(subscriber);
-    subscriptions(this).push(subscription);
-    subscription.setNotifier(this);
+    const privates = getPrivates(this);
+    privates.subscriptions = [...privates.subscriptions, subscription];
+    subscription.activate(this);
     return subscription;
   }
 
@@ -38,25 +48,20 @@ export default class Notifier {
       throw new Error('Not subscribed here');
     }
 
-    removeElement(subscriptions(this), subscription);
-    subscription.setNotifier(undefined);
+    const privates = getPrivates(this);
+    privates.subscriptions = withoutElement(
+      this.getSubscriptions(),
+      subscription
+    );
+    subscription.finish();
   }
 
   /** @returns {Subscription<T>[]} */
   getSubscriptions() {
-    return subscriptions(this).slice();
+    return getPrivates(this).subscriptions.slice();
   }
 
-  notify(/** @type {T} */ value) {
-    subscriptions(this).forEach((s) => s.next(value));
+  next(/** @type {T} */ value) {
+    this.getSubscriptions().forEach((s) => s.next(value));
   }
-}
-
-/** @template T @returns {Subscription<T>[]} */
-function subscriptions(/** @type {Notifier<T>} */ notifier) {
-  const privates = privatesMap.get(notifier);
-  if (!privates) {
-    throw new Error('Notifier - Missing privates');
-  }
-  return privates.subscriptions;
 }

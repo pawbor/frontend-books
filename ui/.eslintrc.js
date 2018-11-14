@@ -32,6 +32,7 @@ module.exports = {
         allow: ['warn', 'error'],
       },
     ],
+    'no-constant-condition': [ERROR, { checkLoops: false }],
     'react/jsx-no-undef': ERROR,
     'react/jsx-uses-vars': ERROR,
     'react/jsx-uses-react': ERROR,

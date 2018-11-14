@@ -4,8 +4,8 @@
     [
       "@babel/plugin-transform-react-jsx",
       {
-        "pragma": "jsx.pragma",
-        "pragmaFrag": "jsx.fragment"
+        "pragma": "jsx.createVNode",
+        "pragmaFrag": "jsx.JsxFragmentSymbol"
       }
     ]
   ]

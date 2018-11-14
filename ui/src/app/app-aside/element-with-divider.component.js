@@ -2,11 +2,8 @@ import './element-with-divider.component.css';
 
 /**
  * @param {Object} param0
- * @param {Object} param0.props
- * @param {() => any} param0.props.render
+ * @param {(className: string) => any} param0.render
  */
-export default function ElementWithDivider({ props: { render } }) {
-  const element = render();
-  element.classList.add('ElementWithDivider');
-  return element;
+export default function ElementWithDivider({ render }) {
+  return render('ElementWithDivider');
 }

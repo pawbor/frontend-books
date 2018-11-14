@@ -12,47 +12,77 @@ describe('Subscription', () => {
 
   test('with default subscriber', () => {
     const subscription = new Subscription();
-    expect(subscription.getSubscriber()).toHaveProperty('next');
+    expect(subscription.getSubscriber().next).toBe(noop);
   });
 });
 
-describe('setNotifier', () => {
-  test('sets notifier', () => {
-    const notifier = new Notifier();
-    const sub = new Subscription();
-    sub.setNotifier(notifier);
-    expect(sub.getNotifier()).toBe(notifier);
+describe('activate', () => {
+  test('connects notifier', () => {
+    const { subscription, notifier } = activeSubscription();
+    expect(subscription.getNotifier()).toBe(notifier);
   });
 
-  test('fails if has notofier', () => {
-    const notifier = new Notifier();
-    const sub = new Subscription();
-    sub.setNotifier(notifier);
+  test('fails if active', () => {
+    const { subscription } = activeSubscription();
     function harnessFn() {
       const tryNotifier = new Notifier();
-      sub.setNotifier(tryNotifier);
+      subscription.activate(tryNotifier);
     }
-    expect(harnessFn).toThrowError('Notifier is already set');
+    expect(harnessFn).toThrowError('Not a new subscription');
+  });
+
+  test('fails if finished', () => {
+    const subscription = finishedSubscription();
+    function harnessFn() {
+      const tryNotifier = new Notifier();
+      subscription.activate(tryNotifier);
+    }
+    expect(harnessFn).toThrowError('Not a new subscription');
+  });
+});
+
+describe('finish', () => {
+  test('resets notifier', () => {
+    const { subscription, notifier } = activeSubscription();
+    expect(subscription.getNotifier()).toBe(notifier);
+  });
+
+  test('fails if new', () => {
+    const subscription = new Subscription();
+    function harnessFn() {
+      subscription.finish();
+    }
+    expect(harnessFn).toThrowError('Not an active subscription');
+  });
+
+  test('fails if finished', () => {
+    const subscription = finishedSubscription();
+    function harnessFn() {
+      subscription.finish();
+    }
+    expect(harnessFn).toThrowError('Not an active subscription');
   });
 });
 
 describe('unsubscribe', () => {
-  test('unsubscribes from notifier', () => {
-    const notifier = new Notifier();
-    const sub = notifier.subscribe();
-    sub.unsubscribe();
-    expect(sub.getNotifier()).toBeUndefined();
-    expect(notifier.getSubscriptions()).not.toContain(sub);
+  function prepare() {
+    const { subscription, notifier, cleanupList } = activeSubscription();
+    subscription.unsubscribe();
+    return { subscription, notifier, cleanupList };
+  }
+
+  test('removes itself from notifier', () => {
+    const { subscription, notifier } = prepare();
+    expect(notifier.getSubscriptions()).not.toContain(subscription);
+  });
+
+  test('disconnects notifier', () => {
+    const { subscription } = prepare();
+    expect(subscription.getNotifier()).toBeUndefined();
   });
 
   test('Executes cleanup', () => {
-    const notifier = new Notifier();
-    const sub = notifier.subscribe();
-    const cleanupList = Array.from({ length: 5 }, () => jest.fn());
-    cleanupList.forEach((cleanup) => {
-      sub.addCleanup(cleanup);
-    });
-    sub.unsubscribe();
+    const { cleanupList } = prepare();
     cleanupList.forEach((cleanup) => {
       expect(cleanup).toHaveBeenCalledTimes(1);
     });
@@ -61,22 +91,55 @@ describe('unsubscribe', () => {
 
 describe('next', () => {
   test('notifies subscriber', () => {
-    const next = jest.fn();
-    const subscription = new Subscription({ next });
+    const { subscription, subscriber } = activeSubscription();
     const emittedValue = 'foo';
     subscription.next(emittedValue);
-    expect(next).toHaveBeenCalledTimes(1);
-    expect(next).toHaveBeenCalledWith(emittedValue);
+    expect(subscriber.next).toHaveBeenCalledTimes(1);
+    expect(subscriber.next).toHaveBeenCalledWith(emittedValue);
   });
 
-  describe('no subscriber', () => {
-    test("won't fail", () => {
-      const subscription = new Subscription();
-      const emittedValue = 'foo';
-      function harnessFn() {
-        subscription.next(emittedValue);
-      }
-      expect(harnessFn).not.toThrowError();
-    });
+  test('fails if new', () => {
+    const subscription = new Subscription();
+    const emittedValue = 'foo';
+    function harnessFn() {
+      subscription.next(emittedValue);
+    }
+    expect(harnessFn).toThrowError('Not an active subscription');
+  });
+
+  test('fails if finished', () => {
+    const subscription = finishedSubscription();
+    const emittedValue = 'foo';
+    function harnessFn() {
+      subscription.next(emittedValue);
+    }
+    expect(harnessFn).toThrowError('Not an active subscription');
   });
 });
+
+describe('addCleanup', () => {
+  test('finished subscription calls cleanup immediately', () => {
+    const subscription = finishedSubscription();
+    const cleanUp = jest.fn();
+    subscription.addCleanup(cleanUp);
+    expect(cleanUp).toHaveBeenCalledTimes(1);
+  });
+});
+
+function activeSubscription() {
+  const notifier = new Notifier();
+  const subscriber = { next: jest.fn() };
+  const subscription = new Subscription(subscriber);
+  subscription.activate(notifier);
+  const cleanupList = Array.from({ length: 5 }, () => jest.fn());
+  cleanupList.forEach((cleanup) => {
+    subscription.addCleanup(cleanup);
+  });
+  return { subscription, notifier, subscriber, cleanupList };
+}
+
+function finishedSubscription() {
+  const { subscription } = activeSubscription();
+  subscription.finish();
+  return subscription;
+}

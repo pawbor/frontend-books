@@ -8,8 +8,7 @@ export default function map(mapping) {
   return mapTransformation;
 
   /**
-   * @param {Subscription<R>} subscription
-   * @returns {Subscription<T>}
+   * @type {import('../types').Transformation<R, T>}
    */
   function mapTransformation(subscription) {
     const transformedSubscription = new Subscription({

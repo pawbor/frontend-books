@@ -1,10 +1,11 @@
-import jsx from 'utils/jsx';
 import { SortingProperty, sortingOptionsStore } from 'app/store';
 import Invisible from 'common/invisible/invisible.component';
+import hookStream from 'common/hook-stream';
+import jsx from 'utils/jsx';
+import { Maybe } from 'utils/fp';
 
 import './sorting-options.component.css';
 import ElementWithDivider from './element-with-divider.component';
-import { Maybe } from 'utils/fp';
 
 const options = [
   {
@@ -28,73 +29,94 @@ export default function SortingOptions() {
   return (
     <>
       <h2 className="SortingOptions__header">Sortuj po</h2>
-      <ElementWithDivider render={List} />
+      <SortingOptionsList />
     </>
   );
 }
 
-function List() {
+function SortingOptionsList() {
+  const currentSelection = hookStream(
+    sortingOptionsStore.sortingPropertyStream(),
+    SortingProperty.None
+  );
+
   const listElements = options.map(
     ({ optionValue, optionLabel, optionClass }) => (
-      <SortingOption value={optionValue} className={optionClass}>
+      <SortingOption
+        value={optionValue}
+        currentSelection={currentSelection}
+        optionClass={optionClass}
+      >
         {optionLabel}
       </SortingOption>
     )
   );
-  return <ul className="SortingOptions__list">{listElements}</ul>;
-}
 
-/**
- * @param {Object} param0
- * @param {Object} param0.props
- * @param {import('app/store').SortingProperty} param0.props.value
- * @param {string} param0.props.className
- * @param {import('utils/jsx/types').JsxChild[]} param0.children
- */
-function SortingOption({ props: { value, className }, children: [label] }) {
-  return (
-    <li className="SortingOption">
-      <label className="SortingOption__label">
-        <Invisible render={renderRadioInput} />
-        <span className="SortingOption__text">{label}</span>
-      </label>
-    </li>
-  );
+  return <ElementWithDivider render={renderListWithDivider} />;
 
-  function renderRadioInput() {
-    return <RadioInput value={value} className={className} />;
+  /**
+   * @param {string} dividerClass
+   */
+  function renderListWithDivider(dividerClass) {
+    const className = `SortingOptions__list ${dividerClass}`;
+    return <ul className={className}>{listElements}</ul>;
   }
 }
 
 /**
  * @param {Object} param0
- * @param {Object} param0.props
- * @param {import('app/store').SortingProperty} param0.props.value
- * @param {string} param0.props.className
+ * @param {import('app/store').SortingProperty} param0.value
+ * @param {string} param0.currentSelection
+ * @param {string} param0.optionClass
+ * @param {any} param0.children
  */
-function RadioInput({ props: { value, className } }) {
-  const input = (
+function SortingOption({
+  value,
+  currentSelection,
+  optionClass,
+  children: label,
+}) {
+  return (
+    <li className="SortingOption">
+      <label className="SortingOption__label">
+        <Invisible render={renderInvisibleRadioInput} />
+        <span className="SortingOption__text">{label}</span>
+      </label>
+    </li>
+  );
+
+  /**
+   * @param {string} invisibleClass
+   */
+  function renderInvisibleRadioInput(invisibleClass) {
+    const className = `${optionClass} ${invisibleClass}`;
+    return (
+      <RadioInput
+        value={value}
+        currentSelection={currentSelection}
+        className={className}
+      />
+    );
+  }
+}
+
+/**
+ * @param {Object} param0
+ * @param {import('app/store').SortingProperty} param0.value
+ * @param {string} param0.className
+ * @param {string} param0.currentSelection
+ */
+function RadioInput({ value, className, currentSelection }) {
+  return (
     <input
       className={`SortingOption__radio ${className}`}
       type="radio"
       name="sort"
       value={value}
       onchange={onChange}
+      checked={currentSelection === value}
     />
   );
-
-  sortingOptionsStore.sortingPropertyStream().subscribe({
-    next: updateInput,
-  });
-
-  return input;
-
-  /**
-   * @param {import('app/store').SortingProperty} sortingProperty
-   */
-  function updateInput(sortingProperty) {
-    input.checked = sortingProperty === value;
-  }
 
   /**
    * @param {Event} event

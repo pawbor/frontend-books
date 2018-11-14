@@ -1,6 +1,5 @@
 import Subscription from '../subscription';
 
-
 /**
  * @template T
  * @param {import('utils/fp/types').Predicate<T>} predicate
@@ -9,8 +8,7 @@ export default function filter(predicate) {
   return filterTransformation;
 
   /**
-   * @param {Subscription<T>} subscription
-   * @returns {Subscription<T>}
+   * @type {import('../types').Transformation<T, T>}
    */
   function filterTransformation(subscription) {
     const transformedSubscription = new Subscription({

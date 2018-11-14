@@ -14,8 +14,7 @@ export default function ArrayStream(array) {
 
 /**
  * @template T
- * @param {Subscription<T>} subscription
- * @returns {Subscription<T[]>}
+ * @type {import('./types').Transformation<T, T[]>}
  */
 function arrayTransformation(subscription) {
   const transformedSubscription = new Subscription({

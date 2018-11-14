@@ -1,11 +1,11 @@
-import pragma from './pragma';
-import fragment from './fragment';
-import renderDom from './render-dom';
+import render from './dom/render';
+import createVNode from './nodes/create-v-node';
+import { JsxFragmentSymbol } from './nodes/symbols';
 
 const jsx = {
-  pragma,
-  fragment,
-  renderDom
+  createVNode,
+  JsxFragmentSymbol,
+  render,
 };
 
 export default jsx;

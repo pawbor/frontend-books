@@ -1,25 +1,31 @@
-import jsx from 'utils/jsx';
 import { filteringOptionsStore } from 'app/store';
+import hookStream from 'common/hook-stream';
+import jsx from 'utils/jsx';
+import { Maybe } from 'utils/fp';
+
+import ElementWithDivider from './element-with-divider.component';
 
 import './filtering-options.component.css';
-import ElementWithDivider from './element-with-divider.component';
-import { Maybe } from 'utils/fp';
 
 export default function FilteringOptions() {
   return (
     <>
       <h2 className="FilteringOptions__header">Pokaż tylko</h2>
-      <ElementWithDivider render={List} />
+      <ElementWithDivider render={renderListWithDivider} />
     </>
   );
-}
 
-function List() {
-  return (
-    <ul className="FilteringOptions__list">
-      <PagesFilter />
-    </ul>
-  );
+  /**
+   * @param {string} dividerClass
+   */
+  function renderListWithDivider(dividerClass) {
+    const className = `FilteringOptions__list ${dividerClass}`;
+    return (
+      <ul className={className}>
+        <PagesFilter />
+      </ul>
+    );
+  }
 }
 
 function PagesFilter() {
@@ -33,38 +39,33 @@ function PagesFilter() {
 }
 
 function PagesInput() {
-  /** @type {number} */
-  let lastValidValue = 0;
+  const pages = hookStream(filteringOptionsStore.pagesStream(), 0);
 
-  const input = (
-    <input className="PagesFilter__input" type="text" oninput={onInput} />
+  return (
+    <input
+      className="PagesFilter__input"
+      type="text"
+      value={String(pages)}
+      oninput={onInput}
+    />
   );
-
-  filteringOptionsStore.pagesStream().subscribe({
-    next: updateInput,
-  });
-
-  return input;
-
-  /**
-   * @param {number} pages
-   */
-  function updateInput(pages) {
-    lastValidValue = pages;
-    input.value = String(pages);
-  }
 
   /**
    * @param {Event} event
    */
   function onInput(event) {
-    lastValidValue = new Maybe(event.target)
-      .map((et) => (et instanceof HTMLInputElement ? et : null))
+    const input = new Maybe(event.target).map((et) =>
+      et instanceof HTMLInputElement ? et : null
+    );
+
+    input
       .map(({ value }) => Number(value))
       .map((value) => (isValid(value) ? value : null))
-      .getValue(lastValidValue);
-
-    filteringOptionsStore.setPages(lastValidValue);
+      .default(() => pages)
+      .do((value) => {
+        input.do((target) => (target.value = '' + value));
+        filteringOptionsStore.setPages(value);
+      });
   }
 
   /**

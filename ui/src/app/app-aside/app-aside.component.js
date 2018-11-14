@@ -19,17 +19,21 @@ export default function AppAside() {
 
 /**
  * @param {Object} param0
- * @param {Object} param0.props
- * @param {import('utils/jsx/types').JsxChild[]} param0.children
+ * @param {any} param0.children
  */
-function ClearButton({ children: [label] }) {
+function ClearButton({ children }) {
   EventTargetStream(document, 'keyup')
-    .transform(filter((event) => event.altKey && event.key === 'r'))
-    .subscribe({next: clear});
+    .transform(
+      filter(
+        (event) =>
+          event instanceof KeyboardEvent && event.altKey && event.key === 'r'
+      )
+    )
+    .subscribe({ next: clear });
 
   return (
     <button className="AppAside__clear" type="button" onclick={clear}>
-      {label}
+      {children}
     </button>
   );
 
