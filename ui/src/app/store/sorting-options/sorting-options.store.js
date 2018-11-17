@@ -1,5 +1,5 @@
 import { Store } from 'utils/store';
-import { map } from 'utils/streams/transformations';
+import { map } from 'utils/observable/transformations';
 import SortingProperty from './sorting-property.enum';
 
 const initialState = { property: SortingProperty.None };

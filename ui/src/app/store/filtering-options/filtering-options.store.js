@@ -1,5 +1,5 @@
 import { Store } from 'utils/store';
-import { map } from 'utils/streams/transformations';
+import { map } from 'utils/observable/transformations';
 
 const initialState = { pages: 0 };
 const store = new Store({ initialState });

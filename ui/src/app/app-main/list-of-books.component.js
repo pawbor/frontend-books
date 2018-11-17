@@ -1,15 +1,12 @@
 import hookStream from 'common/hook-stream';
 import jsx from 'utils/jsx';
-import { ReplayStream } from 'utils/streams';
+import { BufferedStream } from 'utils/observable';
 import { hookPostRenderEffect } from 'utils/jsx/hooks';
 
 import './list-of-books.component.css';
 
-/** @type {ReplayStream<import('app/types').Book | undefined>} */
-const modalBookStream = new ReplayStream({
-  initialValue: undefined,
-  bufferSize: 1,
-});
+/** @type {BufferedStream<import('app/types').Book | undefined>} */
+const modalBookStream = new BufferedStream(1, [undefined]);
 
 /**
  * @param {Object} param0

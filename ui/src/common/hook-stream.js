@@ -1,10 +1,10 @@
 import { hookState, hookPostRenderEffect } from 'utils/jsx/hooks';
-import { first } from 'utils/streams/transformations';
+import { first } from 'utils/observable/transformations';
 import { strictEquality } from 'utils/object';
 
 /**
  * @template T
- * @param {import('utils/streams/types').Stream<T>} stream
+ * @param {import('utils/observable').Observable<T>} stream
  * @param {T} initialValue
  * @param {(v1:T, v2:T) => boolean} [checkEquality]
  */
@@ -18,7 +18,9 @@ export default function hookStream(
   hookPostRenderEffect(
     () => {
       stream
-        .transform(first((nextValue) => !checkEquality(currentValue, nextValue)))
+        .transform(
+          first((nextValue) => !checkEquality(currentValue, nextValue))
+        )
         .subscribe({
           /** @param {T} nextValue */
           next(nextValue) {

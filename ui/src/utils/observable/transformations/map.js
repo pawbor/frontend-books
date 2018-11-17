@@ -1,4 +1,4 @@
-import Subscription from '../subscription';
+import Observer from '../observer';
 
 /**
  * @template T, R
@@ -10,9 +10,11 @@ export default function map(mapping) {
   /**
    * @type {import('../types').Transformation<R, T>}
    */
-  function mapTransformation(subscription) {
-    const transformedSubscription = new Subscription({
+  function mapTransformation(externalObserver) {
+    return new Observer({
       next: mapValue,
+      error: (e) => externalObserver.error(e),
+      complete: () => externalObserver.complete(),
     });
 
     /**
@@ -20,9 +22,7 @@ export default function map(mapping) {
      */
     function mapValue(value) {
       const transformedValue = mapping(value);
-      subscription.next(transformedValue);
+      externalObserver.next(transformedValue);
     }
-
-    return transformedSubscription;
   }
 }

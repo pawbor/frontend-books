@@ -1,10 +1,10 @@
-import { ReplayStream } from 'utils/streams';
+import { BufferedStream } from 'utils/observable';
 
 /**
  * @template T
  * @typedef {Object} Privates
  * @prop {T} currentState,
- * @prop {ReplayStream<T>} currentStateStream
+ * @prop {BufferedStream<T>} currentStateStream
  */
 
 /** @type {WeakMap<Store<any>, Privates<any>>} */
@@ -30,10 +30,7 @@ export default class Store {
   constructor({ initialState }) {
     const privates = {
       currentState: initialState,
-      currentStateStream: new ReplayStream({
-        initialValue: initialState,
-        bufferSize: 1,
-      }),
+      currentStateStream: new BufferedStream(1, [initialState]),
     };
 
     privatesMap.set(this, privates);
@@ -56,7 +53,7 @@ export default class Store {
   }
 
   /**
-   * @returns {import('utils/streams/types').Stream<T>}
+   * @returns {import('utils/observable').Observable<T>}
    */
   stateStream() {
     return getPrivates(this).currentStateStream.asReadOnly();

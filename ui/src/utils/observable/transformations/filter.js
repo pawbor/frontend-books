@@ -1,4 +1,4 @@
-import Subscription from '../subscription';
+import Observer from '../observer';
 
 /**
  * @template T
@@ -10,12 +10,12 @@ export default function filter(predicate) {
   /**
    * @type {import('../types').Transformation<T, T>}
    */
-  function filterTransformation(subscription) {
-    const transformedSubscription = new Subscription({
+  function filterTransformation(externalObserver) {
+    return new Observer({
       next: filterValue,
+      error: (e) => externalObserver.error(e),
+      complete: () => externalObserver.complete(),
     });
-
-    return transformedSubscription;
 
     /**
      * @param {T} value
@@ -23,7 +23,7 @@ export default function filter(predicate) {
     function filterValue(value) {
       const pass = predicate(value);
       if (pass) {
-        subscription.next(value);
+        externalObserver.next(value);
       }
     }
   }

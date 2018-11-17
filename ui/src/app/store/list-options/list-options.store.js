@@ -1,6 +1,6 @@
-import { CombineLatestStream } from 'utils/streams';
+import { Observable } from 'utils/observable';
 
-import { map } from 'utils/streams/transformations';
+import { map } from 'utils/observable/transformations';
 
 import filteringOptionsStore from '../filtering-options/filtering-options.store';
 import sortingOptionsStore from '../sorting-options/sorting-options.store';
@@ -21,7 +21,7 @@ const LocalStorageKey = {
 };
 
 /**
- * @type {import('utils/streams').Subscription<ListOptionsState> | undefined}
+ * @type {import('utils/observable').Subscription | undefined}
  */
 let localStorageSyncSubscription = undefined;
 
@@ -34,9 +34,9 @@ const listOptionsStore = {
     if (!localStorageSyncSubscription) {
       readOptionsFromLocalStorage();
 
-      localStorageSyncSubscription = this.optionsStream().subscribe({
-        next: updateOptionsInLocalStorage,
-      });
+      localStorageSyncSubscription = this.optionsStream().subscribe(
+        updateOptionsInLocalStorage
+      );
     }
   },
   stopLocalStorageSync() {
@@ -46,12 +46,17 @@ const listOptionsStore = {
     }
   },
 
-  /** @returns {import('utils/streams/types').Stream<ListOptionsState>} */
+  /** @returns {Observable<ListOptionsState>} */
   optionsStream() {
-    return CombineLatestStream({
-      pages: filteringOptionsStore.pagesStream(),
-      sortingProperty: sortingOptionsStore.sortingPropertyStream(),
-    });
+    return Observable.combined([
+      filteringOptionsStore.pagesStream(),
+      sortingOptionsStore.sortingPropertyStream(),
+    ]).transform(
+      map(([pages, sortingProperty]) => ({
+        pages,
+        sortingProperty,
+      }))
+    );
   },
 
   booksStream() {

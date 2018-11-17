@@ -1,7 +1,7 @@
 import jsx from 'utils/jsx';
 import { listOptionsStore } from 'app/store';
-import { EventTargetStream } from 'utils/streams';
-import { filter } from 'utils/streams/transformations';
+import { Observable } from 'utils/observable';
+import { filter } from 'utils/observable/transformations';
 
 import './app-aside.component.css';
 import SortingOptions from './sorting-options.component';
@@ -22,7 +22,7 @@ export default function AppAside() {
  * @param {any} param0.children
  */
 function ClearButton({ children }) {
-  EventTargetStream(document, 'keyup')
+  Observable.fromEvent({ target: document, type: 'keyup' })
     .transform(
       filter(
         (event) =>

@@ -1,37 +1,37 @@
 import Store from './store';
 
 describe('state changes stream', () => {
-  /** @type {import('utils/streams/types').Subscriber<number>} */
-  let subscriber;
+  /** @type {import('utils/observable/types').ObserverLike<number>} */
+  let observer;
 
   beforeEach(() => {
-    subscriber = { next: jest.fn() };
+    observer = jest.fn();
   });
 
   test('initial state', () => {
     const initialState = 10;
     const store = new Store({ initialState });
-    store.stateStream().subscribe(subscriber);
-    expect(subscriber.next).toHaveBeenCalledTimes(1);
-    expect(subscriber.next).toHaveBeenCalledWith(initialState);
+    store.stateStream().subscribe(observer);
+    expect(observer).toHaveBeenCalledTimes(1);
+    expect(observer).toHaveBeenCalledWith(initialState);
   });
 
   test('buffered state', () => {
     const bufferedState = 10;
     const store = new Store({ initialState: 5 });
     store.setState(bufferedState);
-    store.stateStream().subscribe(subscriber);
-    expect(subscriber.next).toHaveBeenCalledTimes(1);
-    expect(subscriber.next).toHaveBeenCalledWith(bufferedState);
+    store.stateStream().subscribe(observer);
+    expect(observer).toHaveBeenCalledTimes(1);
+    expect(observer).toHaveBeenCalledWith(bufferedState);
   });
 
   test('emited state', () => {
     const emittedState = 10;
     const store = new Store({ initialState: 5 });
-    store.stateStream().subscribe(subscriber);
+    store.stateStream().subscribe(observer);
     store.setState(emittedState);
-    expect(subscriber.next).toHaveBeenCalledTimes(2);
-    expect(subscriber.next).toHaveBeenCalledWith(emittedState);
+    expect(observer).toHaveBeenCalledTimes(2);
+    expect(observer).toHaveBeenCalledWith(emittedState);
   });
 });
 
