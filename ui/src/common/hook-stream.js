@@ -15,21 +15,20 @@ export default function hookStream(
 ) {
   const [currentValue, setValue] = hookState(initialValue);
 
-  hookPostRenderEffect(
-    () => {
-      stream
-        .transform(
-          first((nextValue) => !checkEquality(currentValue, nextValue))
-        )
-        .subscribe({
-          /** @param {T} nextValue */
-          next(nextValue) {
-            setValue(nextValue);
-          },
-        });
-    },
-    [currentValue]
-  );
+  hookPostRenderEffect(() => {
+    const sub = stream
+      .transform(first((nextValue) => !checkEquality(currentValue, nextValue)))
+      .subscribe({
+        /** @param {T} nextValue */
+        next(nextValue) {
+          setValue(nextValue);
+        },
+      });
+
+    return () => {
+      sub.unsubscribe();
+    };
+  });
 
   return currentValue;
 }
